@@ -21,11 +21,12 @@ Some data are too large.
 
 ## Step 1 - IDR Download
 
-See `0.data-download` for more details.
+See `0.image-download` for more details.
 
 ```bash
 # Make sure to follow all steps in `0.data-download/README.md` first
-cd 0.data-download
+# This includes one step to test and confirm download configuration
+cd 0.image-download
 bash download_images.sh
 ```
 
