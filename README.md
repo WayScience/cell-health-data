@@ -6,8 +6,8 @@ This is a data repository storing instructions on how to:
 2. Perform segmentation
 3. Define a new single-cell focused dataset of isolated single cells
 4. Compute single cell embeddings
-  - Using CellProfiler
-  - Using DeepProfiler
+    - Using CellProfiler
+    - Using DeepProfiler
 5. Process both kinds of embeddings using pycytominer
 
 These data were originally used as part of the publication [Way et al. 2021](https://doi.org/10.1091/mbc.E20-12-0784).
@@ -25,8 +25,8 @@ See `0.data-download` for more details.
 
 ```bash
 # Make sure to follow all steps in `0.data-download/README.md` first
-cd 0.data-download
 bash download_images.sh
+cd 0.data-download
 ```
 
 ## Step 2 - Segmentation
