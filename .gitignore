@@ -1,2 +1,6 @@
+# Ignore temp files
 .DS_Store
 .ipynb_checkpoints/
+
+# Ignore raw images (they're too big!)
+images/
