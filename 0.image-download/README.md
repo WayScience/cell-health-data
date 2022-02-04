@@ -39,7 +39,10 @@ You can find links to all of the metadata files here: https://github.com/IDR/idr
 - Click the link (github submodule) to be directed to the specific metadata repository
     - We're using this repo: https://github.com/IDR/idr0080-way-perturbation/
 - Follow the instructions in [`0.download-manifest.ipynb`](0.download-manifest.ipynb)
-    - This will download both the `plates` and `annotation` metadata files. The `plates`
+    - This will download both the `plates` and `annotation` metadata files.
+
+The `plates` metadata file contains plate names and file paths.
+The `annotation` metadata file contains well level information (e.g. perturbation).
 
 ## Step 4 - Download images
 
