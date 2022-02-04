@@ -25,8 +25,8 @@ See `0.data-download` for more details.
 
 ```bash
 # Make sure to follow all steps in `0.data-download/README.md` first
-bash download_images.sh
 cd 0.data-download
+bash download_images.sh
 ```
 
 ## Step 2 - Segmentation
