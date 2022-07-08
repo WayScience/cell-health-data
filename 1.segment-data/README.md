@@ -16,7 +16,7 @@ After manually experiementing with CellPose on about 10 mitosis-movie frames, we
 More information about CellPose models can be found at https://cellpose.readthedocs.io/en/latest/models.html.
 - `channels = [0,0]` This parameter forces the model to segment cells in grayscale (in the case of Mitocheck mitosis movies single channel images).
 - `diameter = 0` This parameter forces the model to estimate the nuclei diameters.
-- `flow_threshold=0.8` This paramenter increases the maximum allowed error of the flows for each mask (default is `flow_threshold=0.4`).
+- `flow_threshold=0.4` This paramenter increases the maximum allowed error of the flows for each mask (default is `flow_threshold=0.4`).
 More information about CellPose settings can be found at https://cellpose.readthedocs.io/en/latest/settings.html.
 
 ## Step 1: Setup Segmentation Environment
@@ -35,7 +35,9 @@ conda env create -f 1.segment-env.yml
 conda activate 1.segment-data-cell-health
 ```
 
-## Step 2: Execute Training Data Segmentation
+## Step 2: 
+
+## Step 3: Execute Training Data Segmentation
 
 ```bash
 # Run this script to segment training data
