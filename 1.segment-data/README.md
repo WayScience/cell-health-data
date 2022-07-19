@@ -51,5 +51,5 @@ We use PyTorch GPU while segmenting Cell Health data.
 
 ```bash
 # Run this script to segment Cell Health data
-bash 1.segment_data.sh
+bash 1.segment-data.sh
 ```
