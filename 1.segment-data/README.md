@@ -4,7 +4,7 @@ In this module, we present our pipeline for segmenting nuclei and cyoplasm from 
 
 ### Segmentation
 
-We use the CellPose segmentation algorithim to segment the nuclei from each mitosis movie. 
+We use the CellPose segmentation algorithm to segment the nuclei from the Hoechst channel of each Cell Painting image. 
 CellPose was first introduced in [Stringer, C., Wang, T., Michaelos, M. et al., 2020](https://doi.org/10.1038/s41592-020-01018-x) and we use the [python implementation](https://github.com/mouseland/cellpose).
 
 Stringer et al. trained the CellPose segmentation models on a diverse set of cell images and is therefore a good selection for our use case.
