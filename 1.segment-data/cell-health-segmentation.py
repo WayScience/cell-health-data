@@ -1,14 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # Cell Health Data Segmentor
-# ### Find center coordinates for cells from Cell Health data
-# 
-# #### Import libraries
-
-# In[1]:
-
-
 # from cellpose.io import logger_setup
 from cellpose import models, core, io, utils
 
@@ -17,22 +6,6 @@ import pandas as pd
 
 import cv2
 import numpy as np
-
-
-# ### Set Up CellPose
-
-# In[2]:
-
-
-use_GPU = core.use_gpu()
-print(">>> GPU activated? %d" % use_GPU)
-# logger_setup();
-
-
-# ### Helper functions for segmenting Cell Health data
-
-# In[3]:
-
 
 def overlay_channels(current_image: str, current_dir: pathlib.Path) -> np.ndarray:
     """overlays nuclei, ER, and RNA channels to help with CellPose segmentation
@@ -55,9 +28,13 @@ def overlay_channels(current_image: str, current_dir: pathlib.Path) -> np.ndarra
         channel_image = np.array(cv2.imread(str(channel_path), 0))
         channel_images.append(channel_image)
 
+    # channel multipliers are only useful for human interpretation of the overlayed images
+    # channel brightness is irrelevant to CellPose segmentation
+    # channel images 1,2,3 are DNA, ER, RNA respectively
     overlay = np.dstack(
         [channel_images[0] * 2, channel_images[1] * 0, channel_images[2] * 5]
     ).astype(np.uint8)
+    
     return overlay
 
 
@@ -185,19 +162,3 @@ def segment_cell_health(
                             cyto_locations.to_csv(cyto_save_path, sep="\t")
                         else:
                             print(f"{cyto_save_path.name} already exists!")
-
-
-# In[4]:
-
-
-data_path = pathlib.Path(
-    "/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health/"
-)
-save_path = pathlib.Path(
-    "/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-segmented/"
-)
-cellpose_model_DNA = models.Cellpose(gpu=True, model_type="cyto")
-cellpose_model_cyto = models.Cellpose(gpu=True, model_type="cyto")
-
-segment_cell_health(data_path, save_path, cellpose_model_DNA, cellpose_model_cyto)
-
