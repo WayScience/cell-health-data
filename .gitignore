@@ -1,6 +1,7 @@
 # Ignore temp files
 .DS_Store
 .ipynb_checkpoints/
-
+# Ignore python files
+*__pycache__
 # Ignore raw images (they're too big!)
 images/

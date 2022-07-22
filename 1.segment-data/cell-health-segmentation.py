@@ -7,6 +7,43 @@ import pandas as pd
 import cv2
 import numpy as np
 
+
+def get_object_locations(
+    image: np.ndarray, model_specs: dict
+) -> pd.DataFrame:
+    """finds center X,Y of objects using specs from model_specs and return pandas array with center X,Y of objects
+
+    Args:
+        image (np.ndarray): image with objects to segment
+        model_specs (dict): specifications for cellpose segmentation
+
+    Returns:
+        pd.DataFrame: dataframe with object center coords
+    """
+    objects_data = []
+
+    cellpose_model = models.Cellpose(gpu=True, model_type=model_specs["model_type"])
+    masks, flows, styles, diams = cellpose_model.eval(
+        image,
+        diameter=model_specs["diameter"],
+        channels=model_specs["channels"],
+        flow_threshold=model_specs["flow_threshold"],
+        cellprob_threshold=model_specs["cellprob_threshold"],
+    )
+    outlines = utils.outlines_list(masks)
+
+    for outline in outlines:
+        centroid = outline.mean(axis=0)
+        object_data = {
+            "Location_Center_X": centroid[0],
+            "Location_Center_Y": centroid[1],
+        }
+        objects_data.append(object_data)
+
+    objects_data = pd.DataFrame(objects_data)
+    return objects_data
+
+
 def overlay_channels(current_image: str, current_dir: pathlib.Path) -> np.ndarray:
     """overlays nuclei, ER, and RNA channels to help with CellPose segmentation
 
@@ -34,93 +71,23 @@ def overlay_channels(current_image: str, current_dir: pathlib.Path) -> np.ndarra
     overlay = np.dstack(
         [channel_images[0] * 2, channel_images[1] * 0, channel_images[2] * 5]
     ).astype(np.uint8)
-    
+
     return overlay
-
-
-def get_cytoplasm_locations(
-    overlay_image: np.ndarray, cellpose_model: models.Cellpose
-) -> pd.DataFrame:
-    """finds center X,Y of cytoplasm and saves as tsv file
-
-    Args:
-        overlay_image (np.ndarray): overlay image with nuclei and RNA channels
-        cellpose_model (models.Cellpose): cellpose model for segmenting nuclei
-
-    Returns:
-        pd.DataFrame: dataframe with cytoplasm center coords
-    """
-    nuclei_data = []
-
-    # use cellpose to get nuclei outlines
-    frame_image = overlay_image
-    masks, flows, styles, diams = cellpose_model.eval(
-        frame_image,
-        diameter=0,
-        channels=[1, 3],
-        flow_threshold=0,
-        cellprob_threshold=0.4,
-    )
-    outlines = utils.outlines_list(masks)
-
-    for outline in outlines:
-        centroid = outline.mean(axis=0)
-        nucleus_data = {
-            "Location_Center_X": centroid[0],
-            "Location_Center_Y": centroid[1],
-        }
-        nuclei_data.append(nucleus_data)
-
-    nuclei_data = pd.DataFrame(nuclei_data)
-    return nuclei_data
-
-
-def get_nuclei_locations(
-    DNA_image_path: pathlib.Path, cellpose_model: models.Cellpose
-) -> pd.DataFrame:
-    """finds center X,Y of nuclei and saves as tsv file
-
-    Args:
-        DNA_image_path (pathlib.Path): path to DNA channel image
-        cellpose_model (models.Cellpose): cellpose model for segmenting nuclei
-
-    Returns:
-        pd.DataFrame: dataframe with nuclei center coords
-    """
-    nuclei_data = []
-
-    # use cellpose to get nuclei outlines
-    frame_image = io.imread(DNA_image_path)
-    masks, flows, styles, diams = cellpose_model.eval(
-        frame_image, diameter=80, channels=[0, 0], flow_threshold=0
-    )
-    outlines = utils.outlines_list(masks)
-
-    for outline in outlines:
-        centroid = outline.mean(axis=0)
-        nucleus_data = {
-            "Location_Center_X": centroid[0],
-            "Location_Center_Y": centroid[1],
-        }
-        nuclei_data.append(nucleus_data)
-
-    nuclei_data = pd.DataFrame(nuclei_data)
-    return nuclei_data
 
 
 def segment_cell_health(
     data_path: pathlib.Path,
     save_path: pathlib.Path,
-    cellpose_model_DNA: models.Cellpose,
-    cellpose_model_cyto: models.Cellpose,
+    nuclei_model_specs: dict,
+    cytoplasm_model_specs: dict,
 ):
     """segments cell health data from data_path and save segmentation data in save_path using cellpose_model
 
     Args:
         data_path (pathlib.Path): load path for cell health data
         save_path (pathlib.Path): save path for segmentation data
-        cellpose_model_DNA (models.Cellpose): cell pose model to use for segmenting DNA
-        cellpose_model_actin (models.Cellpose): cell pose model to use for segmentating actin
+        nuclei_model_specs (dict): specs for cellpose model to segment nuclei
+        cytoplasm_model_specs (dict): specs for cellpose model to segment cytoplasm
     """
 
     for plate_path in data_path.iterdir():
@@ -139,9 +106,8 @@ def segment_cell_health(
                         if not nuc_save_path.is_file():
                             print(f"Segmenting {nuc_save_path.name}")
                             nuc_save_path.parents[0].mkdir(parents=True, exist_ok=True)
-                            nuc_locations = get_nuclei_locations(
-                                image_file, cellpose_model_DNA
-                            )
+                            nuclei_image = io.imread(image_file)
+                            nuc_locations = get_object_locations(nuclei_image, nuclei_model_specs)
                             nuc_locations.to_csv(nuc_save_path, sep="\t")
                         else:
                             print(f"{nuc_save_path.name} already exists!")
@@ -156,8 +122,8 @@ def segment_cell_health(
                             overlay_image = overlay_channels(
                                 current_image, image_folder
                             )
-                            cyto_locations = get_cytoplasm_locations(
-                                overlay_image, cellpose_model_cyto
+                            cyto_locations = get_object_locations(
+                                overlay_image, cytoplasm_model_specs
                             )
                             cyto_locations.to_csv(cyto_save_path, sep="\t")
                         else:
