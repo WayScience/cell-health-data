@@ -8,9 +8,7 @@ import cv2
 import numpy as np
 
 
-def get_object_locations(
-    image: np.ndarray, model_specs: dict
-) -> pd.DataFrame:
+def get_object_locations(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
     """finds center X,Y of objects using specs from model_specs and return pandas array with center X,Y of objects
 
     Args:
@@ -97,9 +95,7 @@ def segment_cell_health(
                 if ".tiff" in image_file.name:
                     if "-ch1" in image_file.name:
                         # segment nuclei
-                        nuc_save_path = str(image_file).replace(
-                            "cell-health", "cell-health-segmented"
-                        )
+                        nuc_save_path = f"{save_path}/{plate_path.name}/{image_folder.name}/{image_file.name}"
                         nuc_save_path = nuc_save_path.replace(".tiff", "-segmented.tsv")
                         nuc_save_path = pathlib.Path(nuc_save_path)
 
@@ -107,7 +103,9 @@ def segment_cell_health(
                             print(f"Segmenting {nuc_save_path.name}")
                             nuc_save_path.parents[0].mkdir(parents=True, exist_ok=True)
                             nuclei_image = io.imread(image_file)
-                            nuc_locations = get_object_locations(nuclei_image, nuclei_model_specs)
+                            nuc_locations = get_object_locations(
+                                nuclei_image, nuclei_model_specs
+                            )
                             nuc_locations.to_csv(nuc_save_path, sep="\t")
                         else:
                             print(f"{nuc_save_path.name} already exists!")

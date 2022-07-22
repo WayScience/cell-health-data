@@ -18,7 +18,7 @@ More information about CellPose models can be found at https://cellpose.readthed
 - `channels = [0,0]` This parameter forces the model to segment cells in grayscale (in the case of Cell Health data single channel images).
 - `diameter = 80` This parameter indicates to the model that the average cell diameter is 80 pixels.
 - `flow_threshold=0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold=0.4`).
-More information about CellPose settings can be found at https://cellpose.readthedocs.io/en/latest/settings.html.
+- `cellprob_threshold=0` This parameter is used to determine ROIs (default is `cellprob_threshold=0`).
 
 ### Cytoplasm segmentation
 
@@ -34,7 +34,8 @@ Thus, `channels = [1,3]` forces CellPose to segment the RNA channel using the DN
 
 - `diameter = 0` This parameter forces the CellPose model to estimate the diameter of cells being segmented.
 - `flow_threshold=0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold=0.4`).
-- `cellprob_threshold=0.4` This parameter is used to determine ROIs (default is `cellprob_threshold=0`). 
+- `cellprob_threshold=0.4` This parameter is used to determine ROIs (default is `cellprob_threshold=0`).
+
 More information about CellPose settings can be found at https://cellpose.readthedocs.io/en/latest/settings.html.
 
 ## Step 1: Setup Segmentation Environment
@@ -58,7 +59,11 @@ conda activate 1.segment-data-cell-health
 If you would like use PyTorch GPU when using CellPose, follow [these instructions](https://github.com/MouseLand/cellpose#gpu-version-cuda-on-windows-or-linux) to complete the PyTorch GPU setup.
 We use PyTorch GPU while segmenting Cell Health data.
 
-## Step 2: Execute Training Data Segmentation
+## Step 2: Define Data Paths
+
+`load_path` and `save_path` need to be changed to reflect the desired load/save locations.
+
+## Step 3: Execute Training Data Segmentation
 
 ```bash
 # Run this script to segment Cell Health data
