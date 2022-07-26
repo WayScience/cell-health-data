@@ -33,8 +33,8 @@ The `overlay()` function makes RNA the red channel of the image and DNA the blue
 Thus, `channels = [1,3]` forces CellPose to segment the RNA channel using the DNA channel as its base.
 
 - `diameter = 0` This parameter forces the CellPose model to estimate the diameter of cells being segmented.
-- `flow_threshold=0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold=0.4`).
-- `cellprob_threshold=0.4` This parameter is used to determine ROIs (default is `cellprob_threshold=0`).
+- `flow_threshold = 0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold = 0.4`).
+- `cellprob_threshold = 0.4` This parameter is used to determine ROIs (default is `cellprob_threshold = 0`).
 
 More information about CellPose settings can be found at https://cellpose.readthedocs.io/en/latest/settings.html.
 
