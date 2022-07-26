@@ -61,7 +61,8 @@ We use PyTorch GPU while segmenting Cell Health data.
 
 ## Step 2: Define Data Paths
 
-`load_path` and `save_path` need to be changed to reflect the desired load/save locations.
+Inside the notebook <INSERT_NAME_HERE> the variables`load_path` and `save_path` need to be changed to reflect the desired load/save locations.
+We used an external harddrive and therefore needed to use specific paths.
 
 ## Step 3: Execute Training Data Segmentation
 
