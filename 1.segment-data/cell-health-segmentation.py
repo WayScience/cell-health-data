@@ -103,7 +103,7 @@ def overlay_channels(identifier: str, current_dir: pathlib.Path) -> np.ndarray:
     # channel brightness is irrelevant to CellPose segmentation
     # channel images 1,2,3 are DNA, ER, RNA respectively
     overlay = np.dstack(
-        [channel_images[0] * 2, channel_images[1] * 0, channel_images[2] * 5]
+        [channel_images[0] * 2, channel_images[1] * 1, channel_images[2] * 5]
     ).astype(np.uint8)
 
     return overlay

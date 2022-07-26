@@ -10,6 +10,8 @@ CellPose was first introduced in [Stringer, C., Wang, T., Michaelos, M. et al., 
 Stringer et al. trained the CellPose segmentation models on a diverse set of cell images and is therefore a good selection for our use case.
 The CellPose python implementation was particularly useful for building reproducible pipelines.
 
+When manually experimenting with CellPose, it becomes INCLUDE IMAGE
+
 ### Nuclei segmentation
 
 After manually experimenting with CellPose on about 10 Cell Health nuclei images (various cell lines), we settled on the following parameters for CellPose nuclei segmentation:
@@ -27,6 +29,7 @@ After manually experimenting with CellPose on about 10 Cell Health cytoplasm ima
 More information about CellPose models can be found at https://cellpose.readthedocs.io/en/latest/models.html.
 - `channels = [1,3]` This parameter forces the model to segment cells using the nuclei and RNA channels of cell painting images. 
 We overlay nuclei, ER, and RNA channels for CellPose with our `overlay_images()` function in [segment-cell-health-data.ipynb](segment-cell-health-data.ipynb).
+ER channel is not used by CellPose during segmentation (CellPose can only use 2 channels for segmentation), but we found the overlayed ER channel useful to evaluate segmentation while manually experimenting with CellPose.
 
 **Note:** The channel numbers 1,3 correspond to the CellPose colors red and blue respectively.
 The `overlay()` function makes RNA the red channel of the image and DNA the blue channel of the image.
@@ -61,7 +64,7 @@ We use PyTorch GPU while segmenting Cell Health data.
 
 ## Step 2: Define Data Paths
 
-Inside the notebook <INSERT_NAME_HERE> the variables`load_path` and `save_path` need to be changed to reflect the desired load/save locations.
+Inside the notebook [segment-cell-health-data.ipynb](segment-cell-health-data.ipynb), the variables`load_path` and `save_path` need to be changed to reflect the desired load/save locations.
 We used an external harddrive and therefore needed to use specific paths.
 
 ## Step 3: Execute Training Data Segmentation
