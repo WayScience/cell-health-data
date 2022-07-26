@@ -13,7 +13,7 @@ The CellPose python implementation was particularly useful for building reproduc
 ### Nuclei segmentation
 
 After manually experimenting with CellPose on about 10 Cell Health nuclei images (various cell lines), we settled on the following parameters for CellPose nuclei segmentation:
-- `model_type = "cyto"` This parameter forces CellPose to use the cytoplasm model, which we found segments nuclei in the Cell Health data significantly better than the nucleus model. 
+- `model_type = "cyto"` This parameter forces CellPose to use the cytoplasm model, which we found segments nuclei in the Cell Health data substantially better than the nucleus model. 
 More information about CellPose models can be found at https://cellpose.readthedocs.io/en/latest/models.html.
 - `channels = [0,0]` This parameter forces the model to segment cells in grayscale (in the case of Cell Health data single channel images).
 - `diameter = 80` This parameter indicates to the model that the average cell diameter is 80 pixels.
