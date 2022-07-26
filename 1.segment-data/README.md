@@ -70,6 +70,7 @@ We used an external harddrive and therefore needed to use specific paths.
 # Run this script to segment Cell Health data
 bash 1.segment-data.sh
 ```
+
 **Note:** With GPU enabled, our estimated run times were as follows:
 - Nuclei Segmentation: **18 hours**
 - Cytoplasm Segmentation: **58 hours**
