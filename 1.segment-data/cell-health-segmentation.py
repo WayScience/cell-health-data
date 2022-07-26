@@ -7,6 +7,39 @@ import pandas as pd
 import cv2
 import numpy as np
 
+def get_object_outlines(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
+    """finds center X,Y of objects using specs from model_specs and return pandas array with center X,Y of objects
+
+    Args:
+        image (np.ndarray): image with objects to segment
+        model_specs (dict): specifications for cellpose segmentation
+
+    Returns:
+        pd.DataFrame: dataframe with object center coords
+    """
+    objects_data = []
+
+    cellpose_model = models.Cellpose(gpu=True, model_type=model_specs["model_type"])
+    masks, flows, styles, diams = cellpose_model.eval(
+        image,
+        diameter=model_specs["diameter"],
+        channels=model_specs["channels"],
+        flow_threshold=model_specs["flow_threshold"],
+        cellprob_threshold=model_specs["cellprob_threshold"],
+    )
+    # remove cell masks if they are on the edge
+    if model_specs["remove_edge_masks"]:
+        masks = utils.remove_edge_masks(masks)
+    
+    outlines = utils.outlines_list(masks)
+    for outline in outlines:
+        object_data = {
+            "Outline": outline,
+        }
+        objects_data.append(object_data)
+
+    objects_data = pd.DataFrame(objects_data)
+    return objects_data
 
 def get_object_locations(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
     """finds center X,Y of objects using specs from model_specs and return pandas array with center X,Y of objects
@@ -28,8 +61,11 @@ def get_object_locations(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
         flow_threshold=model_specs["flow_threshold"],
         cellprob_threshold=model_specs["cellprob_threshold"],
     )
+    # remove cell masks if they are on the edge
+    if model_specs["remove_edge_masks"]:
+        masks = utils.remove_edge_masks(masks)
+    
     outlines = utils.outlines_list(masks)
-
     for outline in outlines:
         centroid = outline.mean(axis=0)
         object_data = {
@@ -42,11 +78,11 @@ def get_object_locations(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
     return objects_data
 
 
-def overlay_channels(current_image: str, current_dir: pathlib.Path) -> np.ndarray:
+def overlay_channels(identifier: str, current_dir: pathlib.Path) -> np.ndarray:
     """overlays nuclei, ER, and RNA channels to help with CellPose segmentation
 
     Args:
-        current_image (str): string of current field to overlay channels for
+        identifier (str): string of current field to overlay channels for
         current_dir (pathlib.Path): directory of current field
 
     Returns:
@@ -56,7 +92,7 @@ def overlay_channels(current_image: str, current_dir: pathlib.Path) -> np.ndarra
     channel_paths = []
     channel_images = []
     for image_file in current_dir.iterdir():
-        if current_image in image_file.name:
+        if identifier in image_file.name:
             channel_paths.append(image_file)
     channel_paths = sorted(channel_paths)
     for channel_path in channel_paths:
@@ -111,14 +147,14 @@ def segment_cell_health(
                             print(f"{nuc_save_path.name} already exists!")
 
                         # segment cytoplasm
-                        current_image = nuc_save_path.name.split("-")[0]
-                        cyto_save_path = f"{nuc_save_path.parents[0]}/{current_image}-cyto-segmented.tsv"
+                        identifier = nuc_save_path.name.split("-")[0]
+                        cyto_save_path = f"{nuc_save_path.parents[0]}/{identifier}-cyto-segmented.tsv"
                         cyto_save_path = pathlib.Path(cyto_save_path)
 
                         if not cyto_save_path.is_file():
                             print(f"Segmenting {cyto_save_path.name}")
                             overlay_image = overlay_channels(
-                                current_image, image_folder
+                                identifier, image_folder
                             )
                             cyto_locations = get_object_locations(
                                 overlay_image, cytoplasm_model_specs
