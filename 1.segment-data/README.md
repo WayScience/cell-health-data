@@ -17,7 +17,7 @@ After manually experimenting with CellPose on about 10 Cell Health nuclei images
 More information about CellPose models can be found at https://cellpose.readthedocs.io/en/latest/models.html.
 - `channels = [0,0]` This parameter forces the model to segment cells in grayscale (in the case of Cell Health data single channel images).
 - `diameter = 80` This parameter indicates to the model that the average cell diameter is 80 pixels.
-- `flow_threshold=0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold=0.4`).
+- `flow_threshold = 0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold = 0.4`).
 - `cellprob_threshold=0` This parameter is used to determine ROIs (default is `cellprob_threshold=0`).
 
 ### Cytoplasm segmentation
