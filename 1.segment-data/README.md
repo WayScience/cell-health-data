@@ -10,36 +10,65 @@ CellPose was first introduced in [Stringer, C., Wang, T., Michaelos, M. et al., 
 Stringer et al. trained the CellPose segmentation models on a diverse set of cell images and is therefore a good selection for our use case.
 The CellPose python implementation was particularly useful for building reproducible pipelines.
 
-When manually experimenting with CellPose, it becomes INCLUDE IMAGE
-
-### Nuclei segmentation
+### Nuclei Segmentation
 
 After manually experimenting with CellPose on about 10 Cell Health nuclei images (various cell lines), we settled on the following parameters for CellPose nuclei segmentation:
-- `model_type = "cyto"` This parameter forces CellPose to use the cytoplasm model, which we found segments nuclei in the Cell Health data substantially better than the nucleus model. 
+- `model_type : "cyto"` This parameter forces CellPose to use the cytoplasm model, which we found segments nuclei in the Cell Health data substantially better than the nucleus model. 
 More information about CellPose models can be found at https://cellpose.readthedocs.io/en/latest/models.html.
-- `channels = [0,0]` This parameter forces the model to segment cells in grayscale (in the case of Cell Health data single channel images).
-- `diameter = 80` This parameter indicates to the model that the average cell diameter is 80 pixels.
-- `flow_threshold = 0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold = 0.4`).
-- `cellprob_threshold=0` This parameter is used to determine ROIs (default is `cellprob_threshold=0`).
+- `channels : [0,0]` This parameter forces the model to segment cells in grayscale (in the case of Cell Health data single channel images).
+- `diameter : 80` This parameter indicates to the model that the average cell diameter is 80 pixels.
+- `flow_threshold : 0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold : 0.4`).
+- `cellprob_threshold : 0` This parameter is used to determine ROIs (default is `cellprob_threshold : 0`).
+- `remove_edge_masks : True` This parameter removes any masks from CellPose that are touching an edge of the image.
 
-### Cytoplasm segmentation
+When manually experimenting with CellPose parameters to segment nuclei, we looked at nuclei shape/texture to determine how we believe it should be segmented.
+
+For example, in the image below, the nuclei is a continous shape with a continuous, flat texture (left).
+Thus, this nuclei should be segmented as one nuclei.
+CellPose thinks the nuclei below is two nuclei when `diameter` is set to 0 (middle).
+With our parameters, Cellpose correctly segments the nuclei (right).
+
+![Nuclei Compiled](imgs/nuc_compiled.png "Nuclei Compiled")
+
+### Cytoplasm Segmentation
 
 After manually experimenting with CellPose on about 10 Cell Health cytoplasm images (various cell lines), we settled on the following parameters for CellPose cytoplasm segmentation:
-- `model_type = "cyto"` This parameter forces CellPose to use the cytoplasm model for segmentation.
+- `model_type : "cyto"` This parameter forces CellPose to use the cytoplasm model for segmentation.
 More information about CellPose models can be found at https://cellpose.readthedocs.io/en/latest/models.html.
-- `channels = [1,3]` This parameter forces the model to segment cells using the nuclei and RNA channels of cell painting images. 
+- `channels : [1,3]` This parameter forces the model to segment cells using the nuclei and RNA channels of cell painting images. 
 We overlay nuclei, ER, and RNA channels for CellPose with our `overlay_images()` function in [segment-cell-health-data.ipynb](segment-cell-health-data.ipynb).
 ER channel is not used by CellPose during segmentation (CellPose can only use 2 channels for segmentation), but we found the overlayed ER channel useful to evaluate segmentation while manually experimenting with CellPose.
 
 **Note:** The channel numbers 1,3 correspond to the CellPose colors red and blue respectively.
 The `overlay()` function makes RNA the red channel of the image and DNA the blue channel of the image.
-Thus, `channels = [1,3]` forces CellPose to segment the RNA channel using the DNA channel as its base.
+Thus, `channels : [1,3]` forces CellPose to segment the RNA channel using the DNA channel as its base.
 
-- `diameter = 0` This parameter forces the CellPose model to estimate the diameter of cells being segmented.
-- `flow_threshold = 0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold = 0.4`).
-- `cellprob_threshold = 0.4` This parameter is used to determine ROIs (default is `cellprob_threshold = 0`).
+- `diameter : 0` This parameter forces the CellPose model to estimate the diameter of cells being segmented.
+- `flow_threshold : 0` This paramenter decreases the maximum allowed error of the flows for each mask (default is `flow_threshold : 0.4`).
+- `cellprob_threshold : 0.4` This parameter is used to determine ROIs (default is `cellprob_threshold : 0`).
+- `remove_edge_masks : True` This parameter removes any masks from CellPose that are touching an edge of the image.
 
 More information about CellPose settings can be found at https://cellpose.readthedocs.io/en/latest/settings.html.
+
+When manually experimenting with CellPose parameters to segment cytoplasm, we used DNA (blue), ER (green), and RNA (red) channels to inform our decision on how to segment cytoplasm.
+
+For example, in the image below, the ER of the bottom cell stops abruptly below the top nucleus (left).
+Thus, this should be segmented as two cells.
+With default parameters for `flow_threshold` and `cellprob_threshold`, CellPose completely fails to segment the top cell (middle).
+With our parameters, CellPose correctly segments both cells (right).
+
+![Cytoplasm Compiled](imgs/cyto_compiled.png "Cytoplasm Compiled")
+
+### Cell Identification
+
+After finding the nuclei center coordinates and the cytoplasm outlines, we determine which nuclei and cytoplasms are related.
+First, we assign a `Cell_ID` to every cytoplasm.
+Then, we create a [matplotlib.path](https://matplotlib.org/stable/api/path_api.html) (polygon) from cytoplasm outlines.
+If any nuclei center coordinates are within the cytoplasm polygon, they are assigned the same `Cell_ID` as the cytoplasm.
+Any cytoplasm that does not have a nucleus associated with it is discarded.
+This assures that segmentation errors are controlled (every cytoplasm must have at least one nucleus).
+
+
 
 ## Step 1: Setup Segmentation Environment
 
