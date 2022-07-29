@@ -68,8 +68,6 @@ If any nuclei center coordinates are within the cytoplasm polygon, they are assi
 Any cytoplasm that does not have a nucleus associated with it is discarded.
 This assures that segmentation errors are controlled (every cytoplasm must have at least one nucleus).
 
-
-
 ## Step 1: Setup Segmentation Environment
 
 ### Step 1a: Create Segmentation Environment
@@ -103,9 +101,7 @@ We used an external harddrive and therefore needed to use specific paths.
 bash 1.segment-data.sh
 ```
 
-**Note:** With GPU enabled, our estimated run times were as follows:
-- Nuclei Segmentation: **18 hours**
-- Cytoplasm Segmentation: **58 hours**
+**Note:** With GPU enabled, our estimated run time was 
 
 Our runtime was heavily GPU dependent.
 We use a NVIDIA GeForce RTX 3060 with the following specificaitons:
