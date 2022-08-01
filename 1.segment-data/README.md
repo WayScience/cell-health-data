@@ -23,10 +23,10 @@ More information about CellPose models can be found at https://cellpose.readthed
 
 When manually experimenting with CellPose parameters to segment nuclei, we looked at nuclei shape/texture to determine how we believe it should be segmented.
 
-For example, in the image below, the nuclei is a continous shape with a continuous, flat texture (left).
-Thus, this nuclei should be segmented as one nuclei.
-CellPose thinks the nuclei below is two nuclei when `diameter` is set to 0 (middle).
-With our parameters, Cellpose correctly segments the nuclei (right).
+For example, in the image below, the nucleus is a continuous shape with a continuous, flat texture (left).
+Thus, these segmented nuclei should be segmented as one nucleus.
+CellPose thinks the nucleus below is two nuclei when `diameter` is set to 0 (middle).
+With our parameters, Cellpose correctly segments the nucleus (right).
 
 ![Nuclei Compiled](imgs/nuc_compiled.png "Nuclei Compiled")
 
@@ -65,8 +65,8 @@ After finding the nuclei center coordinates and the cytoplasm outlines, we deter
 First, we assign a `Cell_ID` to every cytoplasm.
 Then, we create a [matplotlib.path](https://matplotlib.org/stable/api/path_api.html) (polygon) from cytoplasm outlines.
 If any nuclei center coordinates are within the cytoplasm polygon, they are assigned the same `Cell_ID` as the cytoplasm.
-Any cytoplasm that does not have a nucleus associated with it is discarded.
-This assures that segmentation errors are controlled (every cytoplasm must have at least one nucleus).
+We discard any cytoplasm that does not have an associated nucleus.
+This controls for segmentation errors (every cytoplasm must have at least one nucleus).
 
 ## Step 1: Setup Segmentation Environment
 
@@ -101,7 +101,7 @@ We used an external harddrive and therefore needed to use specific paths.
 bash 1.segment-data.sh
 ```
 
-**Note:** With GPU enabled, our estimated run time was 
+**Note:** With GPU enabled, our estimated run time was about **100 hours** to segment all Cell Health data.
 
 Our runtime was heavily GPU dependent.
 We use a NVIDIA GeForce RTX 3060 with the following specificaitons:

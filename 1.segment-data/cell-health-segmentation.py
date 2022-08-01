@@ -10,6 +10,7 @@ import numpy as np
 
 import matplotlib.path as mplPath
 
+
 def get_object_outlines(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
     """finds outlines of objects using specs from model_specs and return pandas array with outlines of objects
 
@@ -33,7 +34,7 @@ def get_object_outlines(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
     # remove cell masks if they are on the edge
     if model_specs["remove_edge_masks"]:
         masks = utils.remove_edge_masks(masks)
-    
+
     outlines = utils.outlines_list(masks)
     for outline in outlines:
         object_data = {
@@ -43,6 +44,7 @@ def get_object_outlines(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
 
     objects_data = pd.DataFrame(objects_data)
     return objects_data
+
 
 def get_object_locations(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
     """finds center X,Y of objects using specs from model_specs and return pandas array with center X,Y of objects
@@ -67,7 +69,7 @@ def get_object_locations(image: np.ndarray, model_specs: dict) -> pd.DataFrame:
     # remove cell masks if they are on the edge
     if model_specs["remove_edge_masks"]:
         masks = utils.remove_edge_masks(masks)
-    
+
     outlines = utils.outlines_list(masks)
     for outline in outlines:
         centroid = outline.mean(axis=0)
@@ -112,7 +114,9 @@ def overlay_channels(identifier: str, current_dir: pathlib.Path) -> np.ndarray:
     return overlay
 
 
-def get_nuc_cyto_data(nuc_locations: pd.DataFrame, cyto_outlines: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_nuc_cyto_data(
+    nuc_locations: pd.DataFrame, cyto_outlines: pd.DataFrame
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """produces nuclei and cytoplasm dataframes with corresponding cell IDs from nuclei locations and cytoplasm outlines
 
     Args:
@@ -124,15 +128,15 @@ def get_nuc_cyto_data(nuc_locations: pd.DataFrame, cyto_outlines: pd.DataFrame) 
     """
     nuc_data = []
     cyto_data = []
-    
+
     # add Cell_ID column, each ID corresponds to index of outline entry
     cyto_outlines = cyto_outlines.reset_index()
-    cyto_outlines = cyto_outlines.rename(columns={'index':'Cell_ID'})
-    
+    cyto_outlines = cyto_outlines.rename(columns={"index": "Cell_ID"})
+
     # iterate over all cytoplasm outlines
     for cyto_index, cyto_row in cyto_outlines.iterrows():
         cell_id = cyto_row["Cell_ID"]
-        
+
         # create path (polygon) from outline to check if the nuclei are in this path
         outline = cyto_row["Outline"]
         cytoplasm_path = mplPath.Path(outline)
@@ -147,7 +151,10 @@ def get_nuc_cyto_data(nuc_locations: pd.DataFrame, cyto_outlines: pd.DataFrame) 
                     "Location_Center_Y": nuc_row["Location_Center_Y"],
                 }
                 nuc_data.append(current_nuc_data)
-                
+
+                # drop nucleus so it doesn't have to be rechecked
+                nuc_locations.drop(nuc_index, inplace=True)
+
                 # convert cytoplasm outline to center coords
                 centroid = cyto_row["Outline"].mean(axis=0)
                 current_cyto_data = {
@@ -157,14 +164,14 @@ def get_nuc_cyto_data(nuc_locations: pd.DataFrame, cyto_outlines: pd.DataFrame) 
                     "Outline": cyto_row["Outline"].tolist(),
                 }
                 cyto_data.append(current_cyto_data)
-    
-    
+
     nuc_data = pd.DataFrame.from_dict(nuc_data)
     cyto_data = pd.DataFrame.from_dict(cyto_data)
     # drop duplicates because cytoplasm gets added multiple times if it has many nuclei in it
     cyto_data = cyto_data.drop_duplicates(subset="Cell_ID")
-    
+
     return nuc_data, cyto_data
+
 
 def segment_cell_health(
     data_path: pathlib.Path,
@@ -190,7 +197,9 @@ def segment_cell_health(
                         # segment nuclei
                         nuc_save_path = f"{save_path}/{plate_path.name}/{image_folder.name}/{image_file.name}"
                         channel_metadata = image_file.name.split("-")[1]
-                        nuc_save_path = nuc_save_path.replace(channel_metadata, "nuc-segmented.tsv")
+                        nuc_save_path = nuc_save_path.replace(
+                            channel_metadata, "nuc-segmented.tsv"
+                        )
                         nuc_save_path = pathlib.Path(nuc_save_path)
 
                         if not nuc_save_path.is_file():
@@ -200,24 +209,24 @@ def segment_cell_health(
                             nuc_locations = get_object_locations(
                                 nuclei_image, nuclei_model_specs
                             )
-                            
+
                             # segment cytoplasm
                             identifier = nuc_save_path.name.split("-")[0]
                             cyto_save_path = f"{nuc_save_path.parents[0]}/{identifier}-cyto-segmented.tsv"
                             cyto_save_path = pathlib.Path(cyto_save_path)
 
                             print(f"Segmenting {cyto_save_path.name}")
-                            overlay_image = overlay_channels(
-                                identifier, image_folder
+                            overlay_image = overlay_channels(identifier, image_folder)
+                            cyto_outlines = get_object_outlines(
+                                overlay_image, cytoplasm_model_specs
                             )
-                            cyto_outlines = get_object_outlines(overlay_image, cytoplasm_model_specs)
-                            
-                            nuc_data, cyto_data = get_nuc_cyto_data(nuc_locations, cyto_outlines)
+
+                            nuc_data, cyto_data = get_nuc_cyto_data(
+                                nuc_locations, cyto_outlines
+                            )
                             nuc_data.to_csv(nuc_save_path, sep="\t", index=False)
                             cyto_data.to_csv(cyto_save_path, sep="\t", index=False)
-                            
+
                         else:
                             identifier = nuc_save_path.name.split("-")[0]
                             print(f"{identifier} has already been segmented!")
-                            
-                            
