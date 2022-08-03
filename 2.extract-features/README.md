@@ -12,6 +12,21 @@ This model extracts features from all 5 cell-painting channels (DNA, ER, RNA, AG
 
 We use the [metadata file](idr0080-screenA-annotation.csv) from idr-0080-way-pertubation downloaded from [IDR github](https://github.com/IDR/idr0080-way-perturbation/blob/74e537fecaa4690f0c98cb1e9a64b45d103de3e3/screenA/idr0080-screenA-annotation.csv).
 
+We also use a similar config file to the one used in the [LUAD Cell Painting repository](https://github.com/broadinstitute/luad-cell-painting).
+We make the following changes to this config file to create [cell_health_nuc_config.json](DP_files/cell_health_nuc_config.json) and [cell_health_cyto_config.json](DP_files/cell_health_cyto_config.json).
+
+Both:
+- `"Allele" -> "Reagent"` While the LUAD study compared alleles across cell painting images, we compare reagents.
+- `dataset: images: {file format: tif, bits: 16, width: 1080, height: 1080} -> dataset: images: {file format: tiff, bits: 16, width: 2160, height: 2160}`: The image details need to reflect the Cell Health data.
+- `prepare: implement: true -> prepare: implement: false` We do not prepare the Cell Health data with illumination correction or compression with Deep Profiler.
+
+`cell_health_nuc_config.json`:
+- `dataset: images: channels: [DNA, ER, RNA, AGP, Mito] -> dataset: images: channels: [DNA]` While the Cell Painting dataset has multiple channels for cell images, we are only interested in examining the DNA channel for the nuclei project.
+- `dataset: locations: box_size: 96 -> dataset: locations: box_size: 256` This change expands the size of the box around each cell that DeepProfiler interprets. This change helps DeepProfiler interpret nuclei from Cell Health data with the same context as it uses to interpret cells in [mitocheck_data](https://github.com/WayScience/mitocheck_data).
+
+`cell_health_cyto_config.json`:
+- `dataset: locations: box_size: 96 -> dataset: locations: box_size: 128` This change expands the size of the box around each cell that DeepProfiler interprets. This change was recommended by Juan to improve performance.
+
 ## Step 1: Setup Feature Extraction Environment
 
 ### Step 1a: Create Feature Extraction Environment
@@ -33,10 +48,10 @@ conda activate 2.feature-extraction-cell-health
 
 ### Step 2a: Clone Repository
 
-Clone the DeepProfiler repository into 3.extract_features/ with 
+Clone the DeepProfiler repository into 2.extract_features/ with 
 
 ```console
-# Make sure you are located in 3.extract_features/
+# Make sure you are located in 2.extract_features/
 cd 2.extract_features/
 git clone https://github.com/cytomining/DeepProfiler.git
 ```
@@ -71,7 +86,6 @@ bash 2.compile-DP-projects.sh
 ## Step 5: Extract Features with DeepProfiler
 
 Change `path/to/DP_nuc_project` and `path/to/DP_cyto_project` below to the `nuc_project_path` and `cyto_project_path` set in step 3.
-In our case we use `/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-DP/` and `/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-cyto-DP/`.
 
 ```sh
 # Run this script to extract features with DeepProfiler
