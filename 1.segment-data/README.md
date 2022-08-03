@@ -102,6 +102,7 @@ bash 1.segment-data.sh
 ```
 
 **Note:** With GPU enabled, our estimated run time was about **100 hours** to segment all Cell Health data.
+The total data for all segmentation data are about **20 GB**.
 
 Our runtime was heavily GPU dependent.
 We use a NVIDIA GeForce RTX 3060 with the following specificaitons:

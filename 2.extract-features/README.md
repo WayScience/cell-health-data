@@ -55,20 +55,25 @@ pip install -e .
 If you would like use Tensorflow GPU when using DeepProfiler, follow [these instructions](https://www.tensorflow.org/install/pip#3_gpu_setup) to complete the Tensorflow GPU setup.
 We use Tensorflow GPU while processing mitocheck data.
 
-## Step 3: Compile DeepProfiler Project
+## Step 3: Define Project Paths
+
+Inside the notebook [compile-DeepProfiler-projects.ipynb](compile-DeepProfiler-projects.ipynb), the variables`nuc_project_path` and `cyto_project_path` need to be changed to reflect the desired nuc/cyto DeepProfiler project locations.
+We used an external harddrive and therefore needed to use specific paths.
+These project paths will contain the DeepProfiler `config.json`, `index.csv`, cell locations, pre-trained model, and extracted features.
+
+## Step 4: Compile DeepProfiler Project
 
 ```bash
 # Run this script to compile the DeepProfiler project
 bash 
 ```
 
-
-
-## Step 4: Extract Features with DeepProfiler
+## Step 5: Extract Features with DeepProfiler
 
 ```sh
 # Run this script to extract features with DeepProfiler
-python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-DP/ --config cell_health_nuclei_config.json profile
+python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-DP/ --config cell_health_nuc_config.json profile
+python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-cyto-DP/ --config cell_health_cyto_config.json profile
 ```
 
 **Note:** `--root` has to be set to the path of the DeepProfiler project
