@@ -10,7 +10,7 @@ We use a [pretrained model](https://github.com/broadinstitute/luad-cell-painting
 [Caicedo et al., 2022](https://www.molbiolcell.org/doi/10.1091/mbc.E21-11-0538) trained this model to extract features from Cell Painting data.
 This model extracts features from all 5 cell-painting channels (DNA, ER, RNA, AGP, Mito).
 
-We use the [metadata file](idr0080-screenA-annotation.csv) from idr-0080-way-pertubation download from [IDR github](https://github.com/IDR/idr0080-way-perturbation/blob/74e537fecaa4690f0c98cb1e9a64b45d103de3e3/screenA/idr0080-screenA-annotation.csv).
+We use the [metadata file](idr0080-screenA-annotation.csv) from idr-0080-way-pertubation downloaded from [IDR github](https://github.com/IDR/idr0080-way-perturbation/blob/74e537fecaa4690f0c98cb1e9a64b45d103de3e3/screenA/idr0080-screenA-annotation.csv).
 
 ## Step 1: Setup Feature Extraction Environment
 
@@ -64,16 +64,17 @@ These project paths will contain the DeepProfiler `config.json`, `index.csv`, ce
 ## Step 4: Compile DeepProfiler Project
 
 ```bash
-# Run this script to compile the DeepProfiler project
-bash 
+# Run this script to compile the DeepProfiler projects
+bash 2.compile-DP-projects.sh
 ```
 
 ## Step 5: Extract Features with DeepProfiler
 
+Change `path/to/DP_nuc_project` and `path/to/DP_cyto_project` below to the `nuc_project_path` and `cyto_project_path` set in step 3.
+In our case we use `/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-DP/` and `/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-cyto-DP/`.
+
 ```sh
 # Run this script to extract features with DeepProfiler
-python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-DP/ --config cell_health_nuc_config.json profile
-python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-cyto-DP/ --config cell_health_cyto_config.json profile
+python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root path/to/DP_nuc_project --config cell_health_nuc_config.json profile
+python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root path/to/DP_cyto_project --config cell_health_cyto_config.json profile
 ```
-
-**Note:** `--root` has to be set to the path of the DeepProfiler project
