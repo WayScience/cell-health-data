@@ -19,7 +19,7 @@ import cv2
 import numpy as np
 
 import importlib
-chs = importlib.import_module("cell-health-segmentation")
+chs = importlib.import_module("segmentation-utils")
 
 
 # ### Set Up CellPose
@@ -48,18 +48,20 @@ save_path = pathlib.Path(
 
 nuclei_model_specs = {
     "model_type": "cyto",
-    "channels": [0,0],
+    "channels": [0, 0],
     "diameter": 80,
     "flow_threshold": 0,
-    "cellprob_threshold": 0
+    "cellprob_threshold": 0,
+    "remove_edge_masks": True,
 }
 
 cytoplasm_model_specs = {
     "model_type": "cyto",
-    "channels": [1,3],
+    "channels": [1, 3],
     "diameter": 0,
     "flow_threshold": 0,
-    "cellprob_threshold": 0.4
+    "cellprob_threshold": 0.4,
+    "remove_edge_masks": True,
 }
 
 chs.segment_cell_health(load_path, save_path, nuclei_model_specs, cytoplasm_model_specs)

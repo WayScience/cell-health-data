@@ -70,3 +70,4 @@ docker run -ti --rm -v $(pwd):/data -e ASCP_LIMIT=100g imagedata/download idr008
 # Run this script to download all images
 bash 1.download-images.sh
 ```
+**Note:** The total data for all illumination corrected images are about **1.5 TB**.
