@@ -78,6 +78,13 @@ These project paths will contain the DeepProfiler `config.json`, `index.csv`, ce
 
 ## Step 4: Compile DeepProfiler Project
 
+In order to profile features with DeepProfiler, a project needs to be set up with a certain file structure and files.
+In [compile-DP-projects.ipynb](compile-DP-projects.ipynb) we create the necessary project structure.
+We copy the config files ([cell_health_nuc_config.json](DP_files/cell_health_nuc_config.json)/[cell_health_cyto_config.json](DP_files/cell_health_cyto_config.json)) to their corresponding projects and the pretrained model ([efficientnet-b0_weights_tf_dim_ordering_tf_kernels_autoaugment.h5](DP_files/efficientnet-b0_weights_tf_dim_ordering_tf_kernels_autoaugment.h5)) to both projects.
+We also compile an `index.csv` file necessary for DeepProfiler to load each image and `nuclei-locations` files necessary for DeepProfiler to find the single cells in each image.
+
+More information on DeepProfiler project structure and necessary files can be found at the [DeepProfiler wiki](https://github.com/cytomining/DeepProfiler/wiki/2.-Project-structure).
+
 ```bash
 # Run this script to compile the DeepProfiler projects
 bash 2.compile-DP-projects.sh
