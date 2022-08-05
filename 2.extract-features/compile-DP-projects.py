@@ -30,7 +30,7 @@ cyto_project_path = pathlib.Path("/media/roshankern/63af2010-c376-459e-a56e-576b
 
 
 checkpoint_name = "efficientnet-b0_weights_tf_dim_ordering_tf_kernels_autoaugment.h5"
-annotations_path = pathlib.Path("idr0080-screenA-annotation.csv")
+annotations_path = pathlib.Path("../0.image-download/manifest/idr0080-screenA-annotation.csv")
 images_load_path = pathlib.Path("/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health/")
 
 DPutils.compile_project(nuc_project_path, checkpoint_name, annotations_path, images_load_path, "nuc")
