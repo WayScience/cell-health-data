@@ -38,7 +38,6 @@ def copy_DP_files(
 
 def get_well_name(row: int, col: int) -> str:
     """get well name from row and col
-    
     example: row 2, column 3 -> B3
 
     Args:
@@ -48,6 +47,7 @@ def get_well_name(row: int, col: int) -> str:
     Returns:
         str: well name
     """
+    # convert row number to corresponding capitalized character in alphabet (via ASCII number) (1=A, 2=B, etc)
     return f"{chr(row+64)}{col}"
 
 
@@ -57,7 +57,7 @@ def compile_index_csv(
     annotations: pd.DataFrame,
     object: str,
 ) -> pd.DataFrame:
-    """compiles index csv (image metdata, channel image locations, reagent)
+    """compiles index csv (image metadata, channel image locations, reagent)
 
     Args:
         images_load_path (pathlib.Path): path to load images from 

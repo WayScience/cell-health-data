@@ -1,4 +1,4 @@
-# 3. Extract Features
+# 2. Extract Features
 
 In this module, we present our pipeline for extracting features from the Cell Health data.
 
@@ -16,7 +16,7 @@ We also use a similar config file to the one used in the [LUAD Cell Painting rep
 We make the following changes to this config file to create [cell_health_nuc_config.json](DP_files/cell_health_nuc_config.json) and [cell_health_cyto_config.json](DP_files/cell_health_cyto_config.json).
 
 Both:
-- `"Allele" -> "Reagent"` While the LUAD study compared alleles across cell painting images, we compare reagents.
+- `"Allele" -> "Reagent"` While the LUAD study compared alleles across cell painting images, we compare the reagents that correspond to CRISPR perturbations among the different images.
 - `dataset: images: {file format: tif, bits: 16, width: 1080, height: 1080} -> dataset: images: {file format: tiff, bits: 16, width: 2160, height: 2160}`: The image details need to reflect the Cell Health data.
 - `prepare: implement: true -> prepare: implement: false` We do not prepare the Cell Health data with illumination correction or compression with Deep Profiler.
 
