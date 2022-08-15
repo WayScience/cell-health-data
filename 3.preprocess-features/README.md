@@ -1,4 +1,4 @@
-# 4. Preprocess Features
+# 3. Preprocess Features
 
 In this module, we present our pipeline for preprocessing features.
 
@@ -40,7 +40,7 @@ conda env create -f 3.preprocess-features-env.yml
 conda activate 3.preprocess-features-cell-health
 ```
 
-## Step 2: Define file/folder paths
+## Step 2: Define File/Folder paths
 
 Inside the notebook [preprocess-features.ipynb](preprocess-features.ipynb), the variables `features_output_dir` and `original_index_csv_path` need to be changed the reflect the paths of the features output directory and original index.csv file from the DeepProfiler project.
 `output_path` needs to be changed to reflect the desired output directory for the normalized data.
