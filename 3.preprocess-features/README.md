@@ -7,7 +7,9 @@ In this module, we present our pipeline for preprocessing features.
 We use [PyCytominer](https://github.com/cytomining/pycytominer) to compile single-cell features.
 
 We use [sklearn.preprocessing.StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) to derive a normalizion scaler from all negative control features.
-As stated in [Caicedo et al, 2017](https://www.nature.com/articles/nmeth.4397):
+`StandardScaler()` standardizes features by removing the mean and scaling to unit variance.
+
+As stated in [Caicedo et al, 2017](https://www.nature.com/articles/nmeth.4397) explain why the negative control features are a good normalization population for our use case:
 > When choosing the normalizing population, we suggest the use of control samples (assuming that they are present in sufficient quantity), because the presence of dramatic phenotypes may confound results. This procedure is good practice regardless of the normalization being performed within plates or across the screen.
 
 The `get_negative_control_index_df` function inside [preprocess-features-utils.py](preprocess-features-utils.py) creates a DeepProfiler-style `index.csv` file (saved in [norm_pop_index.csv](norm_pop_index.csv)) with only the negative control wells.
@@ -36,7 +38,6 @@ conda activate 3.preprocess-features-cell-health
 ## Step 2: Define file/folder paths
 
 Inside the notebook [preprocess-features.ipynb](preprocess-features.ipynb), the variables `features_output_dir` and `original_index_csv_path` need to be changed the reflect the paths of the features output directory and original index.csv file from the DeepProfiler project.
-The variable `output_path` needs to be changed to reflect the desired directory for final normalized data.
 We used an external harddrive and therefore needed to use specific paths.
 
 ## Step 3: Preprocess Cell Health Features
