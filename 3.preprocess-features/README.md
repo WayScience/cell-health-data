@@ -12,12 +12,13 @@ We use [sklearn.preprocessing.StandardScaler](https://scikit-learn.org/stable/mo
 [Caicedo et al, 2017](https://www.nature.com/articles/nmeth.4397) explain why the negative control features are a good normalization population for our use case:
 > When choosing the normalizing population, we suggest the use of control samples (assuming that they are present in sufficient quantity), because the presence of dramatic phenotypes may confound results. This procedure is good practice regardless of the normalization being performed within plates or across the screen.
 
-The `get_negative_control_index_df` function inside [preprocess-features-utils.py](preprocess-features-utils.py) creates a DeepProfiler-style `index.csv` file (saved in [norm_pop_index.csv](intermediate_files/norm_pop_index.csv)) with only the negative control wells.
-We then use pycytominer to compile the features from these negative control wells and derive and `StandardScaler` with only the negative control features (saved in [negative_control_scaler.save](negative_control_scaler.save)).
-
-After deriving a normalization scaler, we load features by plate and apply the normalization scaler to these plate features.
-The normalized features from each plate are saved in `output_path/`.
-It is necessary to normalize features by plate because we are unable to load the single-cell features for the entire screen into memory.
+We derive a normalization scaler per plate and normalize each plate with their respective scaler so any plate batch effects are corrected for.
+Inside [preprocess-features.ipynb](preprocess-features.ipynb), we iterate through every plate and complete the following:
+1) Find all negative control wells for the specified plate.
+2) Compile features from the negative control wells.
+3) Derive a normalization scaler from the negative control well features.
+4) Apply the normalization scaler to the entire plate.
+5) Save the compiled normalized plate features inside `output_path/`.
 
 ## Step 1: Setup Feature Preprocessing Environment
 
