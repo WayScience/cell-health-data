@@ -19,11 +19,6 @@ After deriving a normalization scaler, we load features by plate and apply the n
 The normalized features from each plate are saved in `output_path/`.
 It is necessary to normalize features by plate because we are unable to load the single-cell features for the entire screen into memory.
 
-**Note:** The single-cell dataframes for each plate are first saved as uncompressed files with `pandas.to_csv`.
-These uncompressed files are then compressed with [pigz-python](https://github.com/nix7drummer88/pigz-python) and the original, uncompressed files are deleted.
-`Pigz-python` is the python implementation of [pigz](https://zlib.net/pigz/), which uses multiple cores to compress files.
-This is significantly faster than the native `pandas` gzip compression.
-
 ## Step 1: Setup Feature Preprocessing Environment
 
 ### Step 1a: Create Feature Preprocessing Environment
@@ -42,8 +37,7 @@ conda activate 3.preprocess-features-cell-health
 
 ## Step 2: Define File/Folder paths
 
-Inside the notebook [preprocess-features.ipynb](preprocess-features.ipynb), the variables `features_output_dir` and `original_index_csv_path` need to be changed the reflect the paths of the features output directory and original index.csv file from the DeepProfiler project.
-`output_path` needs to be changed to reflect the desired output directory for the normalized data.
+Inside the notebook [preprocess-features.ipynb](preprocess-features.ipynb), the variables `DP_project_path` and `output_path` need to be changed the reflect the paths of the DeepProfiler project to load features/metadata from and the desired save location for normalized features output.
 We used an external harddrive and therefore needed to use specific paths.
 
 ## Step 3: Preprocess Cell Health Features
