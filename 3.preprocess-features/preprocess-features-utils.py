@@ -3,7 +3,6 @@ from importlib.resources import path
 import pathlib
 import pandas as pd
 import numpy as np
-import pigz_python
 import os
 
 from pycytominer.cyto_utils import DeepProfiler_processing
