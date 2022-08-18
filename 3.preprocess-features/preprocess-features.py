@@ -61,11 +61,14 @@ for plate in plates:
     norm_index_df = preprocessUtils.get_negative_control_index_df(index_csv_path, annotations_path, plate)
     # save normalization population dataframe so pycytominer knows where to load normalization features from
     norm_index_df.to_csv(plate_normalization_index_csv, index=False)
+    
     # create per-plate normalization scaler from the normalization population
     print(f"Deriving scaler for plate {plate}")
     scaler = preprocessUtils.get_normalization_scaler(plate_normalization_index_csv, features_output_dir)
+    
     # get compiled normalized plate features
     plate_pop = preprocessUtils.normalize_plate(index_csv_path, scaler, features_output_dir, plate)
+    
     # save compiled normalized plate features
     print(f"Saving plate {plate}")
     normalized_features_csv_path = pathlib.Path(f"{output_path}/{plate}_normalized_single_cell.csv.gz")
