@@ -91,6 +91,8 @@ def normalize_plate(index_df_path: pathlib.Path, scaler: StandardScaler, feature
         scaler to use for normalization
     features_output_dir : pathlib.Path
         path to DeepProfiler features output directory
+    plate : str
+        plate to normalize
     """
     
     print(f"Compiling plate {plate}")
@@ -107,6 +109,7 @@ def normalize_plate(index_df_path: pathlib.Path, scaler: StandardScaler, feature
     features = plate_pop[derived_features].to_numpy()
     features = scaler.transform(features)
     features = pd.DataFrame(features, columns=derived_features)
+    
     # replace original features of plate with normalized features
     metadata = [col_name for col_name in col_list if "efficientnet" not in col_name]
     metadata = plate_pop[metadata]
