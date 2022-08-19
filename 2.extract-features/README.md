@@ -48,11 +48,11 @@ conda activate 2.feature-extraction-cell-health
 
 ### Step 2a: Clone Repository
 
-Clone the DeepProfiler repository into 2.extract_features/ with 
+Clone the DeepProfiler repository into 2.extract-features/ with 
 
 ```console
-# Make sure you are located in 2.extract_features/
-cd 2.extract_features/
+# Make sure you are located in 2.extract-features/
+cd 2.extract-features/
 git clone https://github.com/cytomining/DeepProfiler.git
 ```
 

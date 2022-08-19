@@ -5,3 +5,5 @@
 *__pycache__
 # Ignore example images
 example_images/
+# Ignore intermediate files
+3.preprocess-features/intermediate_files
