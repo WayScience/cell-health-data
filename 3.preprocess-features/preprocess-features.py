@@ -47,6 +47,7 @@ original_index_csv.to_csv(index_csv_path)
 
 
 # ### Find negative controls for each plate, derive scalers from these negative controls, normalize entire plate with scaler, save normalized plate
+# #### Only one plate (`SQ00014617`) is processsed in the jupyter notebook as an example. All other plate processed in `preprocess-features.py` file
 
 # In[4]:
 
