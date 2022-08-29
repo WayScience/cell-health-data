@@ -24,7 +24,7 @@ import requests
 
 
 def download_sqllite_file(filename: Union[str, Path], url: str):
-    """ Downloads Single-Cell Cell painting profiles from Figshare data
+    """Downloads Single-Cell Cell painting profiles from Figshare data
     repository
 
     Parameters
@@ -33,7 +33,7 @@ def download_sqllite_file(filename: Union[str, Path], url: str):
         Path to store downloaded profiles
     url : str
         Url that downloads specific profile data.
-    
+
     Returns
     -------
     None
@@ -43,14 +43,15 @@ def download_sqllite_file(filename: Union[str, Path], url: str):
     print("Now downloading... {}".format(filename))
     with requests.get(url, stream=True) as sql_request:
         sql_request.raise_for_status()
-        with open(filename, 'wb') as sql_fh:
+        with open(filename, "wb") as sql_fh:
             for chunk in sql_request.iter_content(chunk_size=786432000):
                 if chunk:
                     assert isinstance(chunk, object)
                     sql_fh.write(chunk)
 
+
 if __name__ == "__main__":
-    
+
     # file to downloaded
     # -- plate name with figshare ID
     file_info = {
@@ -69,7 +70,7 @@ if __name__ == "__main__":
     download_dir_obj = Path("./data")
     download_dir_obj.mkdir(exist_ok=True)
 
-    # collect all function inputs in a list 
+    # collect all function inputs in a list
     func_params_list = []
     for plate in file_info:
         figshare_id = file_info[plate]
@@ -79,8 +80,7 @@ if __name__ == "__main__":
         url = f"https://nih.figshare.com/ndownloader/files/{figshare_id}"
         func_params_list.append([filename, url])
 
-
-    # initializing parallelization 
+    # initializing parallelization
     n_jobs = len(file_info)
     with mp.Pool(processes=n_jobs) as pool:
         pool.starmap(download_sqllite_file, func_params_list)
