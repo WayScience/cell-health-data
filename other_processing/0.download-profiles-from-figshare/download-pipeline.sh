@@ -4,5 +4,5 @@
 python download.py
 
 # Confirm download integrity
-md5sum -c md5sums.txt
+md5sum -c md5_sums.txt
 
