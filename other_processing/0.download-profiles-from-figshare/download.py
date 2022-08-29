@@ -44,7 +44,7 @@ def download_sqllite_file(filename: Union[str, Path], url: str):
     with requests.get(url, stream=True) as sql_request:
         sql_request.raise_for_status()
         with open(filename, 'wb') as sql_fh:
-            for chunk in sql_request.iter_content(chunk_size=819200000):
+            for chunk in sql_request.iter_content(chunk_size=786432000):
                 if chunk:
                     assert isinstance(chunk, object)
                     sql_fh.write(chunk)
