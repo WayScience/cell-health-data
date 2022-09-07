@@ -1,6 +1,8 @@
 """
-Download Single Cell Cell Painting Profiles
-Gregory Way, 2019
+Download Single Cell Cell Painting Profiles in parallel
+Erik Serrano, 2022
+Modified from a script written by Gregory Way, 2019
+https://github.com/broadinstitute/cell-health/blob/master/0.download-data/download.py
 
 These data were output from a CRISPR and Cell Painting experiment.
 A microscope took pictures of all cells under several CRISPR perturbations.
@@ -12,10 +14,12 @@ We uploaded the `sqlite` files to NIH Figshare
 https://nih.figshare.com/articles/dataset/Cell_Health_-_Cell_Painting_Single_Cell_Profiles/9995672/1.
 These data are publicly available
 
-*Important Note*
+This pipeline introduces an newer version of the cell health dataset (version 6)
+. Downloaded sqlite files are converted into parquet files providing improved
+efficiency in data storage and retrieval. 
 
+*Important Note*
 These files are large (~130 GB Total).
-There is no need to download and reprocess the data.
 """
 from typing import Union
 from pathlib import Path
