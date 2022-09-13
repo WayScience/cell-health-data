@@ -46,6 +46,7 @@ save_path = pathlib.Path(
     "/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-segmented/"
 )
 
+# set nuclei specifications
 nuclei_model_specs = {
     "model_type": "cyto",
     "channels": [0, 0],
@@ -55,6 +56,7 @@ nuclei_model_specs = {
     "remove_edge_masks": True,
 }
 
+# set cytoplasm spcecifications
 cytoplasm_model_specs = {
     "model_type": "cyto",
     "channels": [1, 3],
@@ -64,5 +66,6 @@ cytoplasm_model_specs = {
     "remove_edge_masks": True,
 }
 
+# run segmentation on Cell Health data
 chs.segment_cell_health(load_path, save_path, nuclei_model_specs, cytoplasm_model_specs)
 

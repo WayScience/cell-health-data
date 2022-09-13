@@ -1,5 +1,4 @@
 from importlib.resources import path
-from cairo import PATH_LINE_TO
 import pandas as pd
 import pathlib
 import shutil
@@ -154,6 +153,7 @@ def compile_training_locations(
         # get identifier string for image
         identifier = row["DNA"].split("/")[-1].split("-")[0]
 
+        # `Nuclei.csv` is hardcoded to be the expected file name for DeepProfiler
         locations_save_path = pathlib.Path(
             f"{save_path}/{plate}/{well}-{site}-Nuclei.csv"
         )
