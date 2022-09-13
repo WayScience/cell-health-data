@@ -237,4 +237,3 @@ def compile_project(
         index_save_path, segmentation_data_path, locations_save_path, object
     )
     print("Done compiling locations!")
-    
