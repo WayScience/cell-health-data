@@ -10,9 +10,8 @@ The data were processed by a custom CellProfiler pipeline.
 In the pipeline, we measured several morphology features for every single cell.
 We then aggregated the output of CellProfiler using cytominer-database.
 Cytominer-database compiles all single cell profiles into a single `sqlite` database.
-We uploaded the `sqlite` files to NIH Figshare
+We uploaded the `sqlite` files to NIH Figshare, where they are publicly available:
 https://nih.figshare.com/articles/dataset/Cell_Health_-_Cell_Painting_Single_Cell_Profiles/9995672/1.
-These data are publicly available
 
 This pipeline introduces an newer version of the cell health dataset (version 6)
 . Downloaded sqlite files are converted into parquet files providing improved
