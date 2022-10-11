@@ -97,7 +97,7 @@ if __name__ in "__main__":
     parquet_files = glob.glob(f"{str(parquet_data_dir)}/*.parquet")
     print(parquet_files)
     hashed_files_dict = {}
-    with open(hash_check_file, "r") as f:
+    with open(file=hash_check_file, mode="r", encoding="utf-8") as f:
         for line in f:
             path, _hash = line.rstrip("\n").split()
             hashed_files_dict[path] = _hash
