@@ -89,6 +89,8 @@ if __name__ == "__main__":
 
     # initializing parallelization
     n_jobs = len(file_info)
+    if n_jobs > mp.cpu_count():
+        n_jobs = mp.cpu_count()
     with mp.Pool(processes=n_jobs) as pool:
         pool.starmap(download_sqlite_file, func_params_list)
         pool.close()
