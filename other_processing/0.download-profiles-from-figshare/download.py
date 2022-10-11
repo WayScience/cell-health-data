@@ -48,7 +48,7 @@ def download_sqlite_file(filename: Union[str, Path], url: str):
         filename = Path(filename)
 
     plate_name = filename.name
-    print("Now downloading... {}".format(plate_name))
+    print(f"Now downloading... {plate_name}")
     with requests.get(url, stream=True) as sql_request:
         sql_request.raise_for_status()
         with open(filename, "wb") as sql_fh:
