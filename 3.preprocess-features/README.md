@@ -45,5 +45,5 @@ We used an external harddrive and therefore needed to use specific paths.
 
 ```bash
 # Run this script to preprocess Cell Health features
-bash 3.preprocess-features.sh
+bash 4.classify-features.sh
 ```
