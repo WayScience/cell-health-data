@@ -2,7 +2,7 @@ import pathlib
 import numpy as np
 import pandas as pd
 
-def get_reagent_probabilities(classifier, plate_load_path: pathlib.Path):
+def classify_plate_cells(classifier, plate_load_path: pathlib.Path):
     """
     get class probabilities for features in a plate, averaged across reagent perturbation
 
@@ -20,38 +20,23 @@ def get_reagent_probabilities(classifier, plate_load_path: pathlib.Path):
     """
     
     first_row_data = pd.read_csv(plate_load_path, compression="gzip", nrows=1)
+    metadata_cols = [col for col in first_row_data.columns if 'efficientnet' not in col]
     feature_cols = [col for col in first_row_data.columns if 'efficientnet' in col]
     prediction_classes = classifier.classes_
     
     print(f"Loading feature data for {plate_load_path.name}...")
-    # create list of what columns to load in and what their datatypes are
-    load_cols = []
-    load_cols.append("Metadata_Reagent")
-    df_dtype = {}
-    df_dtype["Metadata_Reagent"] = str
-    
-    for feature_name in feature_cols:
-        load_cols.append(feature_name)
-        df_dtype[feature_name] = np.float32
+    # specify datatypes for all columns to make loading more efficient
+    metadata_dtypes = {metadata_col: str for metadata_col in metadata_cols}
+    feature_dtypes = {feature_col: np.float32 for feature_col in feature_cols}
+    # combine both dictionaries
+    plate_dtypes = metadata_dtypes | feature_dtypes
     
     # load in csv with the specified column names/datatypes
-    plate_data = pd.read_csv(plate_load_path, compression="gzip", usecols=load_cols, dtype=df_dtype, low_memory=True)
+    plate_data = pd.read_csv(plate_load_path, compression="gzip", dtype=plate_dtypes, low_memory=True)
     
     print(f"Classifying feature data for {plate_load_path.name}...")
     
-    unique_reagents = plate_data["Metadata_Reagent"].unique()
-    plate_reagent_predictions = []
-
-    for reagent in unique_reagents:
-        # get classifier prediction probabilities for features values for each cell in reagent
-        reagent_feature_data = plate_data.loc[plate_data["Metadata_Reagent"] == reagent][feature_cols].values
-        reagent_predictions = classifier.predict_proba(reagent_feature_data)
-        # average predition probabilities for the reagent
-        reagent_predictions_median = np.mean(reagent_predictions, axis=0)
-        # map 16 phenotypic classes to the 16 prediction values
-        reagent_predictions_data = {"reagent": reagent}
-        reagent_predictions_data.update(dict(zip(prediction_classes,reagent_predictions_median)))
-        
-        plate_reagent_predictions.append(reagent_predictions_data)
-        
-    return pd.DataFrame(plate_reagent_predictions)
+    cell_metadatas = plate_data[metadata_cols].reset_index(drop=True)
+    cell_classifications = pd.DataFrame(classifier.predict_proba(plate_data[feature_cols].values), columns = prediction_classes).reset_index(drop=True)
+    
+    return pd.concat([cell_metadatas, cell_classifications], axis=1)
