@@ -25,6 +25,7 @@ def classify_plate_cells(classifier, plate_load_path: pathlib.Path) -> pd.DataFr
     metadata_cols = [col for col in first_row_data.columns if "efficientnet" not in col]
     feature_cols = [col for col in first_row_data.columns if "efficientnet" in col]
 
+    # specify datatypes for metadata/feature columns
     metadata_dtypes = {metadata_col: str for metadata_col in metadata_cols}
     feature_dtypes = {feature_col: np.float32 for feature_col in feature_cols}
     # combine both dictionaries
