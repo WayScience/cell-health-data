@@ -1,4 +1,4 @@
-# 3. Classify Features
+# 4. Classify Features
 
 In this module, we present our pipeline for classifying features.
 
