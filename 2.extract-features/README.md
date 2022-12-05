@@ -10,7 +10,7 @@ We use a [pretrained model](https://github.com/broadinstitute/luad-cell-painting
 [Caicedo et al., 2022](https://www.molbiolcell.org/doi/10.1091/mbc.E21-11-0538) trained this model to extract features from Cell Painting data.
 This model extracts features from all 5 cell-painting channels (DNA, ER, RNA, AGP, Mito).
 
-We use the [metadata file](idr0080-screenA-annotation.csv) from idr-0080-way-pertubation downloaded from [IDR github](https://github.com/IDR/idr0080-way-perturbation/blob/74e537fecaa4690f0c98cb1e9a64b45d103de3e3/screenA/idr0080-screenA-annotation.csv).
+We use the [metadata file](../0.image-download/manifest/idr0080-screenA-annotation.csv) from idr-0080-way-pertubation downloaded from [IDR github](https://github.com/IDR/idr0080-way-perturbation/blob/74e537fecaa4690f0c98cb1e9a64b45d103de3e3/screenA/idr0080-screenA-annotation.csv).
 
 We also use a similar config file to the one used in the [LUAD Cell Painting repository](https://github.com/broadinstitute/luad-cell-painting).
 We make the following changes to this config file to create [cell_health_nuc_config.json](DP_files/cell_health_nuc_config.json) and [cell_health_cyto_config.json](DP_files/cell_health_cyto_config.json).
@@ -72,7 +72,7 @@ We use Tensorflow GPU while processing mitocheck data.
 
 ## Step 3: Define Project Paths
 
-Inside the notebook [compile-DeepProfiler-projects.ipynb](compile-DeepProfiler-projects.ipynb), the variables`nuc_project_path` and `cyto_project_path` need to be changed to reflect the desired nuc/cyto DeepProfiler project locations.
+Inside the notebook [compile-DP-projects.ipynb](compile-DP-projects.ipynb), the variables `nuc_project_path` and `cyto_project_path` need to be changed to reflect the desired nuc/cyto DeepProfiler project locations.
 We used an external harddrive and therefore needed to use specific paths.
 These project paths will contain the DeepProfiler `config.json`, `index.csv`, cell locations, pre-trained model, and extracted features.
 
