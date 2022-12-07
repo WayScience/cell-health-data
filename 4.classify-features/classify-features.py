@@ -8,9 +8,7 @@
 # In[1]:
 
 
-import pandas as pd
 import pathlib
-import numpy as np
 import urllib.request
 import joblib
 
