@@ -21,7 +21,7 @@ classification_utils = importlib.import_module("classification-utils")
 # In[2]:
 
 
-hash = "64cfc46ecd92f1956af199c81f8ecf4dc292718f"
+gh_hash = "64cfc46ecd92f1956af199c81f8ecf4dc292718f"
 file_url = f"https://raw.github.com/WayScience/phenotypic_profiling_model/{hash}/2.train_model/models/log_reg_model.joblib"
 log_reg_model_path = pathlib.Path("log_reg_model.joblib")
 urllib.request.urlretrieve(file_url, log_reg_model_path)
