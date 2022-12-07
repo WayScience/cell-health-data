@@ -7,7 +7,9 @@ In this module, we present our pipeline for classifying features.
 We use a logistic regression model trained in [phenotypic_profiling](https://github.com/WayScience/phenotypic_profiling_model) to classify nucleus features from Cell Health Data.
 
 The version of the classification model downloaded from `phenotypic_profiling` can be specified by the hash corresponding to a commit.
-The current hash being used is `64cfc46ecd92f1956af199c81f8ecf4dc292718f` which corresponds to [phenotypic_profiling/64cfc46](https://github.com/WayScience/phenotypic_profiling_model/tree/64cfc46ecd92f1956af199c81f8ecf4dc292718f). The `hash` variable can be set in [classify-features.ipynb](classify-features.ipynb) to change which version of `phenotypic_profiling` is being accessed.
+The current hash being used is `64cfc46ecd92f1956af199c81f8ecf4dc292718f` which corresponds to [phenotypic_profiling/64cfc46](https://github.com/WayScience/phenotypic_profiling_model/tree/64cfc46ecd92f1956af199c81f8ecf4dc292718f). The `gh_hash` variable can be set in [classify-features.ipynb](classify-features.ipynb) to change which version of `phenotypic_profiling` is being accessed.
+
+The specified classification model will be downloaded to [log_reg_model.joblib](log_reg_model.joblib) and loaded from this file.
 
 ## Step 1: Setup Feature Classification Environment
 
