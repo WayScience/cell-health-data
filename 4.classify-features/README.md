@@ -29,7 +29,7 @@ conda activate 4.classify-features-cell-health
 
 ## Step 3: Classify Cell Health Features
 
-```bash
+```sh
 # Run this script to classify Cell Health features
 bash 4.classify-features.sh
 ```
