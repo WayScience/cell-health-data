@@ -1,3 +1,7 @@
+"""
+utils for classifying cells from Cell Health Data
+"""
+
 import pathlib
 import numpy as np
 import pandas as pd
