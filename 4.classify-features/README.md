@@ -1,0 +1,35 @@
+# 4. Classify Features
+
+In this module, we present our pipeline for classifying features.
+
+### Feature Classification
+
+We use a logistic regression model trained in [phenotypic_profiling](https://github.com/WayScience/phenotypic_profiling_model) to classify nucleus features from Cell Health Data.
+
+The version of the classification model downloaded from `phenotypic_profiling` can be specified by the hash corresponding to a commit.
+The current hash being used is `44e2741058c4d38edc137dc2caf5ea1f94b02410` which corresponds to [phenotypic_profiling/44e2741](https://github.com/WayScience/phenotypic_profiling_model/tree/44e2741058c4d38edc137dc2caf5ea1f94b02410). The `gh_hash` variable can be set in [classify-features.ipynb](classify-features.ipynb) to change which version of `phenotypic_profiling` is being accessed.
+
+The specified classification model will be downloaded to [log_reg_model.joblib](log_reg_model.joblib) and loaded from this file.
+
+## Step 1: Setup Feature Classification Environment
+
+### Step 1a: Create Feature Classification Environment
+
+```sh
+# Run this command to create the conda environment for classifying features
+conda env create -f 4.classify-features-env.yml
+```
+
+### Step 1b: Activate Classification Environment
+
+```sh
+# Run this command to activate the conda environment for classifying features
+conda activate 4.classify-features-cell-health
+```
+
+## Step 3: Classify Cell Health Features
+
+```sh
+# Run this script to classify Cell Health features
+bash 4.classify-features.sh
+```
