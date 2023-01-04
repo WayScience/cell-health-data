@@ -8,16 +8,16 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 
-def classify_plate_cells(classifier, plate_load_path: pathlib.Path) -> pd.DataFrame:
+def classify_plate_cells(classifier: LogisticRegression, plate_load_path: pathlib.Path) -> pd.DataFrame:
     """
-    classify cells in
+    classify cells in plate
 
     Parameters
     ----------
     classifier :
-        sklearn classifier
+        sklearn LogisticRegression classifier
     plate_load_path : pathlib.Path
-        path to plate to load
+        path to plate to load and classify
 
     Returns
     -------
@@ -53,6 +53,18 @@ def classify_plate_cells(classifier, plate_load_path: pathlib.Path) -> pd.DataFr
 
 
 def save_feature_classifications(phenotypic_profiling_model: LogisticRegression, normalized_plates_path: pathlib.Path, output_dir: pathlib.Path):
+    """
+    classify features from normalized plates and save these classifications
+
+    Parameters
+    ----------
+    phenotypic_profiling_model : LogisticRegression
+        model to use for classification
+    normalized_plates_path : pathlib.Path
+        path to normalized plates
+    output_dir : pathlib.Path
+        where to save features classifications
+    """
     
     output_dir.mkdir(exist_ok=True, parents=True)
     
@@ -64,4 +76,3 @@ def save_feature_classifications(phenotypic_profiling_model: LogisticRegression,
         
         plate_classifications = classify_plate_cells(phenotypic_profiling_model, plate_load_path)
         plate_classifications.to_csv(plate_classification_save_path, compression = "gzip")
-        return

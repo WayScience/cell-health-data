@@ -16,34 +16,48 @@ import importlib
 classification_utils = importlib.import_module("classification-utils")
 
 
-# ### Download/load `phenotypic_profiling` model
+# ### Download/load `phenotypic_profiling` models
 
 # In[2]:
 
 
-gh_hash = "64cfc46ecd92f1956af199c81f8ecf4dc292718f"
-file_url = f"https://raw.github.com/WayScience/phenotypic_profiling_model/{gh_hash}/2.train_model/models/log_reg_model.joblib"
-log_reg_model_path = pathlib.Path("log_reg_model.joblib")
-urllib.request.urlretrieve(file_url, log_reg_model_path)
+gh_hash = "44e2741058c4d38edc137dc2caf5ea1f94b02410"
+final_model_file_url = f"https://raw.github.com/WayScience/phenotypic_profiling_model/{gh_hash}/2.train_model/models/log_reg_model.joblib"
+shuffled_baseline_file_url = f"https://raw.github.com/WayScience/phenotypic_profiling_model/{gh_hash}/2.train_model/models/shuffled_baseline_log_reg_model.joblib"
+
+models_path = pathlib.Path("phenotypic_profiling_models/")
+models_path.mkdir(exist_ok=True, parents=True)
+
+log_reg_model_path = pathlib.Path(f"{models_path}/log_reg_model.joblib")
+urllib.request.urlretrieve(final_model_file_url, log_reg_model_path)
 log_reg_model = joblib.load(log_reg_model_path)
 
+shuffled_baseline_model_path = pathlib.Path(f"{models_path}/shuffled_baseline_log_reg_model.joblib")
+urllib.request.urlretrieve(shuffled_baseline_file_url, shuffled_baseline_model_path)
+shuffled_baseline_model = joblib.load(shuffled_baseline_model_path)
 
-# ### Get phenotypic class probabilities for each plate
+
+# ### Define hard drive path and classifications output path
 
 # In[3]:
 
 
-normlized_plates_path = pathlib.Path("/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-per-plate-normalized/")
+normalized_plates_path = pathlib.Path("/media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-per-plate-normalized/")
+
 classifications_save_path = pathlib.Path("plate_classifications/")
 classifications_save_path.mkdir(exist_ok=True, parents=True)
 
-# classify cells from each plate and save classifications
-for plate_load_path in normlized_plates_path.iterdir():
-    plate = plate_load_path.name.strip("_normalized_single_cell.csv.gz")
-    plate_classification_save_path = pathlib.Path(f"{classifications_save_path}/{plate}_cell_classifications.csv.gz")
-    
-    plate_classifications = classification_utils.classify_plate_cells(log_reg_model, plate_load_path)
-    
-    print(f"Saving classifications at {plate_classification_save_path}...")
-    plate_classifications.to_csv(plate_classification_save_path, compression = "gzip")
+
+# ### Derive and save phenotypic class probabilities
+
+# In[4]:
+
+
+# save final model classifications
+final_model_classifications_save_path = pathlib.Path(f"{classifications_save_path}/final_model/")
+classification_utils.save_feature_classifications(log_reg_model, normalized_plates_path, final_model_classifications_save_path)
+
+# save shuffled baseline model classifications
+shuffled_baseline_classifications_save_path = pathlib.Path(f"{classifications_save_path}/shuffled_baseline_model/")
+classification_utils.save_feature_classifications(shuffled_baseline_model, normalized_plates_path, shuffled_baseline_classifications_save_path)
 
