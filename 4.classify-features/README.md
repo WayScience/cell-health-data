@@ -29,7 +29,7 @@ conda activate 4.classify-features-cell-health
 
 ## Step 2: Define Folder Paths
 
-Inside the notebook [classify-features.ipynb](classify-features.ipynb), the variable `normlized_plates_path` need to be changed the reflect the paths of the normalized features from [3.preprocess-features](3.preprocess-features).
+Inside the notebook [classify-features.ipynb](classify-features.ipynb), the variable `normlized_plates_path` needs to be changed the reflect the paths of the normalized features from [3.preprocess-features](3.preprocess-features).
 We used an external harddrive and therefore needed to use specific paths.
 
 ## Step 3: Classify Cell Health Features
