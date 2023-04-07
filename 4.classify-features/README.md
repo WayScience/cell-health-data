@@ -9,7 +9,7 @@ We use the final and shuffled baseline logistic regression models trained in [ph
 The version of the classification models downloaded from `phenotypic_profiling` can be specified by the hash corresponding to a commit.
 The current hash being used is `44e2741058c4d38edc137dc2caf5ea1f94b02410` which corresponds to [phenotypic_profiling/44e2741](https://github.com/WayScience/phenotypic_profiling_model/tree/44e2741058c4d38edc137dc2caf5ea1f94b02410). The `gh_hash` variable can be set in [classify-features.ipynb](classify-features.ipynb) to change which version of `phenotypic_profiling` is being accessed.
 
-The specified the classification models will be downloaded to [phenotypic_profiling_models/](phenotypic_profiling_models) and loaded from these files.
+The specified classification models will be downloaded to [phenotypic_profiling_models/](phenotypic_profiling_models) and loaded from these files.
 
 ## Step 1: Setup Feature Classification Environment
 
