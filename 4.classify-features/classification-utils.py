@@ -44,10 +44,9 @@ def classify_plate_cells(classifier: LogisticRegression, plate_load_path: pathli
     # combine metadatas and classifications dataframes
     cell_metadatas = plate_data[metadata_cols].reset_index(drop=True)
     cell_features = plate_data[feature_cols].values
-    prediction_classes = classifier.classes_
     cell_classifications = pd.DataFrame(
         classifier.predict_proba(cell_features),
-        columns=prediction_classes,
+        columns=classifier.classes_,
     ).reset_index(drop=True)
     return pd.concat([cell_metadatas, cell_classifications], axis=1)
 
