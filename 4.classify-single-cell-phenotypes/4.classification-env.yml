@@ -1,4 +1,4 @@
-name: 4.classify-features-cell-health
+name: 4.classify-single-cell-phenotypes
 channels:
   - conda-forge
 dependencies:
