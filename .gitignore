@@ -7,3 +7,6 @@
 example_images/
 # Ignore intermediate files
 3.preprocess-features/intermediate_files
+*.ipynb
+*.sqlite
+*.parquet
