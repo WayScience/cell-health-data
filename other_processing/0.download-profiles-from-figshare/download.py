@@ -20,13 +20,13 @@ efficiency in data storage and retrieval.
 *Important Note*
 These files are large (~130 GB Total).
 """
+import pathlib
 from typing import Union
-from pathlib import Path
 import multiprocessing as mp
 import requests
 
 
-def download_sqlite_file(filename: Union[str, Path], url: str):
+def download_sqlite_file(filename: Union[str, pathlib.Path], url: str):
     """Downloads Single-Cell Cell painting profiles from Figshare data
     repository
 
@@ -44,7 +44,7 @@ def download_sqlite_file(filename: Union[str, Path], url: str):
     """
 
     if isinstance(filename, str):
-        filename = Path(filename)
+        filename = pathlib.Path(filename)
 
     plate_name = filename.name
     print(f"Now downloading... {plate_name}")
@@ -74,13 +74,12 @@ if __name__ == "__main__":
     }
 
     # creating data directory
-    download_dir_obj = Path(__file__).parent / "data"
+    download_dir_obj = pathlib.Path(__file__).parent / "data"
     download_dir_obj.mkdir(exist_ok=True)
 
     # collect all function inputs in a list
     func_params_list = []
-    for plate in file_info:
-        figshare_id = file_info[plate]
+    for plate, figshare_id in file_info.items():
         filename = download_dir_obj / f"{plate}.sqlite"
         if filename.is_file():
             continue

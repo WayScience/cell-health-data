@@ -1,17 +1,24 @@
+"""
+script: check.py
+
+Checks if the downloaded data is neither different or corrupt. Here we use md5 hash to
+ensure that the contents and integrity of the data is unchanged.
+"""
+
 import glob
+import pathlib
 from hashlib import md5
-from pathlib import Path
 from typing import Optional, Union
 
 # credit: https://sebest.github.io/post/a-quick-md5sum-equivalent-in-python/
 def generate_md5_hash(
-    fpath: Union[str, Path], buffer_size: Optional[int] = 8192
+    fpath: Union[str, pathlib.Path], buffer_size: Optional[int] = 8192
 ) -> tuple[str, str]:
     """Creates a md5 hash of all contents within given file.
 
     Parameters
     ----------
-    fpath : Path
+    fpath : pathlib.Path
         path to file to hash
 
     buffer_size : int
@@ -29,19 +36,19 @@ def generate_md5_hash(
     ValueError
         raised if provided file does not end with `.parquet`
     """
-    # converting str into Path object
+    # converting str into pathlib.Path object
     if isinstance(fpath, str):
-        fpath = Path(fpath)
+        fpath = pathlib.Path(fpath)
 
     # Checking
     if not fpath.is_file():
         e_msg = f"Provided file {str(fpath)} is not valid or not a file"
         raise FileNotFoundError(e_msg)
     if fpath.suffix != ".parquet":
-        raise ValueError("Path provided does not point to a parquet file")
+        raise ValueError("pathlib.Path provided does not point to a parquet file")
 
     # initializing hashing object
-    md5_obj = md5()
+    md5_obj = md5(usedforsecurity=False)
 
     # opening file and loading contents based on buffer size
     with open(fpath, "rb") as infile:
@@ -76,7 +83,7 @@ def check_integrity(
     """
     print("Checking parquet data integrity ")
     for parquet_file in parquet_files:
-        file_name = Path(parquet_file).name
+        file_name = pathlib.Path(parquet_file).name
         print(f"Checking {file_name}")
 
         # running md5sum in terminal
@@ -88,12 +95,12 @@ def check_integrity(
 if __name__ in "__main__":
 
     # loading in hashed parquet files and generated parquet files
-    hash_check_file = Path(__file__).parent / "hashed_parquet.txt"
+    hash_check_file = pathlib.Path(__file__).parent / "hashed_parquet.txt"
     parquet_file_path = (
-        Path(__file__).parent.parent / "0.download-profiles-from-figshare/data"
+        pathlib.Path(__file__).parent.parent / "0.download-profiles-from-figshare/data"
     )
 
-    parquet_data_dir = Path(__file__).parent / "cell_health_parquet_data"
+    parquet_data_dir = pathlib.Path(__file__).parent / "cell_health_parquet_data"
     parquet_files = glob.glob(f"{str(parquet_data_dir)}/*.parquet")
     print(parquet_files)
     hashed_files_dict = {}
