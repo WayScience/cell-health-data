@@ -6,17 +6,17 @@ This script involves converting the downloaded sqlite data obtained from
 figshare into parquet.
 """
 
-from pathlib import Path
+import pathlib
 from typing import Union
 import cytotable
 
-def convert_to_parquet(sqlite_path: Union[str, Path]) -> None:
+def convert_to_parquet(file_path: Union[str, pathlib.Path]) -> None:
     """Converts sqlite_path to parquet files. Generated parquet files are
     stored in the `cell-health-parquet-data` directory
 
     Parameters
     ----------
-    sqlite_path : Union[str, Path]
+    file_path : Union[str, Path]
         Path to sqlite file
 
     Return
@@ -26,7 +26,21 @@ def convert_to_parquet(sqlite_path: Union[str, Path]) -> None:
     """
 
     # obtain the sqlite file paths
-    cytotable.convert()
+    if isinstance(file_path, str):
+        file_path = pathlib.Path(file_path).resolve(strict=True)
+
+    parquet_dir = pathlib.Path("cell_health_parquet")
+    parquet_dir.mkdir(exist_ok=True)
+
+
+
+    dest_path = parquet_dir / f"{file_path.stem}.parquet"
+    cytotable.convert(source_path=sqlite_path,
+                      dest_path=str(dest_path),
+                      dest_datatype="parquet",
+                      source_datatype="sqlite")
+
+    print(f"MESSAGE: {file_path.stem} has been converted into parquet file")
 
 
 if __name__ == "__main__":
