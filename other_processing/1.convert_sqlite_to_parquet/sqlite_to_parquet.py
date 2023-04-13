@@ -10,7 +10,7 @@ import pathlib
 from typing import Union
 import cytotable
 
-def convert_to_parquet(file_path: Union[str, pathlib.Path]) -> None:
+def convert_to_parquet(file_path: str) -> None:
     """Converts sqlite_path to parquet files. Generated parquet files are
     stored in the `cell-health-parquet-data` directory
 
@@ -26,16 +26,17 @@ def convert_to_parquet(file_path: Union[str, pathlib.Path]) -> None:
     """
 
     # obtain the sqlite file paths
-    if isinstance(file_path, str):
-        file_path = pathlib.Path(file_path).resolve(strict=True)
+    if not isinstance(file_path, str):
+        raise ValueError("`file_path` must be ")
 
+    file_path_obj = pathlib.Path(file_path)
     parquet_dir = pathlib.Path("cell_health_parquet")
     parquet_dir.mkdir(exist_ok=True)
 
 
 
-    dest_path = parquet_dir / f"{file_path.stem}.parquet"
-    cytotable.convert(source_path=sqlite_path,
+    dest_path = parquet_dir / f"{file_path_obj.stem}.parquet"
+    cytotable.convert(source_path=file_path,
                       dest_path=str(dest_path),
                       dest_datatype="parquet",
                       source_datatype="sqlite")
@@ -47,7 +48,7 @@ if __name__ == "__main__":
 
     # Locating directory that contains downloaded sqlite files
     sqlite_dir_path = (
-        Path(__file__).parent / "0.download-profiles-from-figshare/data"
+        pathlib.Path(__file__).parent.parent / "0.download-profiles-from-figshare/data"
     )
     if not sqlite_dir_path.is_dir():
         raise FileNotFoundError(
@@ -55,8 +56,7 @@ if __name__ == "__main__":
         )
 
     # collecting sqlite files from module 0
-    glob_query = str(sqlite_dir_path / "*.sqlite")
-    sqlite_paths = list(sqlite_dir_path.glob(glob_query))
+    sqlite_paths = list(sqlite_dir_path.glob("*.sqlite"))
     if not sqlite_paths:
         raise FileNotFoundError(
             "No sqlite files were found in module 0 data folder"
@@ -65,5 +65,5 @@ if __name__ == "__main__":
     # converting every sqlite file to parquet
     print("Starting conversion")
     for sqlite_path in sqlite_paths:
-        sqlite_path_obj = Path(sqlite_path)
+        sqlite_path_obj = str(pathlib.Path(sqlite_path).resolve(strict=True))
         convert_to_parquet(sqlite_path_obj)
