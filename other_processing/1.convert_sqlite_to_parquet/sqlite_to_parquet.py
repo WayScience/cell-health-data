@@ -7,8 +7,8 @@ figshare into parquet.
 """
 
 import pathlib
-from typing import Union
 import cytotable
+
 
 def convert_to_parquet(file_path: str) -> None:
     """Converts sqlite_path to parquet files. Generated parquet files are
@@ -29,27 +29,36 @@ def convert_to_parquet(file_path: str) -> None:
     if not isinstance(file_path, str):
         raise ValueError("`file_path` must be ")
 
+    # setting up file paths
     file_path_obj = pathlib.Path(file_path)
     parquet_dir = pathlib.Path("cell_health_parquet")
     parquet_dir.mkdir(exist_ok=True)
-
-
-
     dest_path = parquet_dir / f"{file_path_obj.stem}.parquet"
-    cytotable.convert(source_path=file_path,
-                      dest_path=str(dest_path),
-                      dest_datatype="parquet",
-                      source_datatype="sqlite")
+
+    # converting cell-health sqlite data into parquet files
+    print(file_path)
+    print(str(dest_path))
+    print("parquet")
+    print("sqlite")
+    exit()
+    cytotable.convert(
+        source_path=file_path,
+        dest_path=str(dest_path),
+        dest_datatype="parquet",
+        source_datatype="sqlite",
+    )
 
     print(f"MESSAGE: {file_path.stem} has been converted into parquet file")
 
 
 if __name__ == "__main__":
-
     # Locating directory that contains downloaded sqlite files
     sqlite_dir_path = (
-        pathlib.Path(__file__).parent.parent / "0.download-profiles-from-figshare/data"
-    )
+        pathlib.Path(__file__).parent.parent
+        / "0.download-profiles-from-figshare/data"
+    ).resolve(strict=True)
+
+    # checking if the provided path is a directory
     if not sqlite_dir_path.is_dir():
         raise FileNotFoundError(
             "Unable to find directory containing sqlite files"

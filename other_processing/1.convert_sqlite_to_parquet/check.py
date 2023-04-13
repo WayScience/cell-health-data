@@ -93,21 +93,23 @@ def check_integrity(
 
 
 if __name__ in "__main__":
-    # This script loads the predefined MD5 hash that has been generated from 
+    # This script loads the predefined MD5 hash that has been generated from
     # a previous study:
     # https://github.com/broadinstitute/cell-health/blob/master/0.download-data/md5_sums.txt
     #
     # and compares it with the generated MD5 hashes from the downloaded dataset.
 
-    # loading in hashed parquet files and generated parquet files
+    # loading in hashed file and generated sqlite files
     hash_check_file = pathlib.Path(__file__).parent / "hashed_parquet.txt"
-    parquet_file_path = (
+    sqlite_files = (
         pathlib.Path(__file__).parent.parent / "0.download-profiles-from-figshare/data"
-    )
+    ).resolve(strict=True)
 
-    parquet_data_dir = pathlib.Path(__file__).parent / "cell_health_parquet_data"
-    parquet_files = glob.glob(f"{str(parquet_data_dir)}/*.parquet")
-    print(parquet_files)
+    parquet_data_dir = pathlib.Path(__file__).parent.parent / "cell_health_parquet_data"
+
+    parquet_files = glob.glob(f"{str(p)}/*.parquet")
+
+    exit()
     hashed_files_dict = {}
     with open(file=hash_check_file, mode="r", encoding="utf-8") as f:
         for line in f:
