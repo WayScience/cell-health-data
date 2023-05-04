@@ -18,9 +18,6 @@ import pandas as pd
 import cv2
 import numpy as np
 
-import importlib
-chs = importlib.import_module("segmentation-utils")
-
 
 # ### Set Up CellPose
 
@@ -57,6 +54,8 @@ nuclei_model_specs = {
 }
 
 # set cytoplasm spcecifications
+# although we do not perform cytoplasm segmentation here (yet),
+# these are the specs we found produce the best cytoplasm segmentation on an image overlayed with segmenation-utils.overlay_channels()
 cytoplasm_model_specs = {
     "model_type": "cyto",
     "channels": [1, 3],
@@ -66,6 +65,67 @@ cytoplasm_model_specs = {
     "remove_edge_masks": True,
 }
 
-# run segmentation on Cell Health data
-chs.segment_cell_health(load_path, save_path, nuclei_model_specs, cytoplasm_model_specs)
+cellpose_model = models.Cellpose(gpu=use_GPU, model_type=nuclei_model_specs["model_type"])
+
+# iterate through plates in load path
+for plate_path in load_path.iterdir():
+        print(f"Segmenting plate {plate_path.name}")
+        
+        # iterate through image paths in plates (there should only be one)
+        for image_folder_path in plate_path.iterdir():
+            
+            # create image folder that all segmentations will be saved in
+            image_folder_save_path = pathlib.Path(f"{save_path}/{plate_path.name}/{image_folder_path.name}/")
+            image_folder_save_path.mkdir(parents=True, exist_ok=True)
+            
+            # iterate through cell painting images in image folder
+            for image_path in image_folder_path.iterdir():
+                # skip images that are not channel 1 (DAPI, nuclei) images
+                if (".tiff" not in image_path.name) or ("-ch1" not in image_path.name):
+                    continue
+                
+                # get image ID with metadata about row, col, field
+                image_ID = image_path.name.split("-")[0]
+                # get save paths for masks and locations (center x, y) data
+                nuc_masks_save_path = pathlib.Path(f"{image_folder_save_path}/{image_ID}-nuc-masks.tiff")
+                nuc_locations_save_path = pathlib.Path(f"{image_folder_save_path}/{image_ID}-nuc-locations.tsv")
+
+                # skip images that have already been segmented
+                if nuc_masks_save_path.is_file() and nuc_locations_save_path.is_file():
+                    print(f"Already segmented {image_path.name}")
+                    continue
+                
+                print(f"Segmenting {image_path.name}")
+                
+                # get masks for image
+                # masks are in image format, with a specific integer number coresponding to the mask for a particular cell
+                nuclei_image = io.imread(image_path)
+                masks, flows, style, diam = cellpose_model.eval(
+                    nuclei_image,
+                    diameter=nuclei_model_specs["diameter"],
+                    channels=nuclei_model_specs["channels"],
+                    flow_threshold=nuclei_model_specs["flow_threshold"],
+                    cellprob_threshold=nuclei_model_specs["cellprob_threshold"],
+                )
+                masks = utils.remove_edge_masks(masks)
+                
+                # save masks
+                io.imsave(nuc_masks_save_path, masks)
+                
+                # get center x,y data from masks
+                outlines = utils.outlines_list(masks)
+                objects_data = []
+                for outline in outlines:
+                    centroid = outline.mean(axis=0)
+                    object_data = {
+                        "Location_Center_X": centroid[0],
+                        "Location_Center_Y": centroid[1],
+                    }
+                    objects_data.append(object_data)
+
+                # compile and save locations data
+                objects_data = pd.DataFrame(objects_data)
+                objects_data.to_csv(nuc_locations_save_path, sep="\t", index=False)
+                
+print("All segmenting done!")
 
