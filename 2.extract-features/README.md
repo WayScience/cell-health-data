@@ -149,3 +149,6 @@ Make sure to right click the folder location and choose `Plate` to make the feat
 In CP GUI, click `Analyze Images` to extract CP features for the entire Cell Health dataset.
 
 **Note**: This CP run requires lots of memory and time.
+
+
+cellprofiler -c -r -p /home/roshankern/Desktop/Github/cell-health-data/2.extract-features/CP_feature_extraction/process_CellHealth.cppipe -o /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-CP/SQ00014610 -i /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data -g Metadata_Plate=SQ00014610
