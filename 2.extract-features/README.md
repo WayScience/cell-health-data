@@ -23,14 +23,20 @@ conda env create -f 2.cp-feature-extraction-env.yml
 conda activate 2.cp-feature-extraction-cell-health
 ```
 
-## Step 2: Extract Features
+## Step 2: Define Project Paths
 
-### Step 2a: Open CP GUI
+Inside the notebook [extract-cp-features.ipynb](CP-feature-extraction/extract-cp-features.ipynb), the variables `nuclei_images_load_path`, `all_data_load_path`, and `features_save_path` need to be changed to reflect the desired path to nuclei images, all data, and features respectively.
 
-```sh
-# Run this command to open CP GUI
+## Step 3: Extract Features with CellProfiler
 
-cellprofiler
+We extract features for the Cell Health dataset by plate to best utilize machine memory.
+In [extract-cp-features.ipynb](CP-feature-extraction/extract-cp-features.ipynb), we iterate through each plate in Cell Health and use `subprocess` to extract features with [CellProfiler headless](https://carpenter-singh-lab.broadinstitute.org/blog/getting-started-using-cellprofiler-command-line).
+
+Features are output to `features_save_path` set above in step 3.
+
+```bash
+# Run this script to compile and run the DeepProfiler project
+bash 2a.extract-cp-features.sh
 ```
 
 **Note**: This CP run requires lots of memory and time.
@@ -103,15 +109,15 @@ We use Tensorflow GPU while processing mitocheck data.
 
 ## Step 3: Define Project Paths
 
-Inside the notebook [compile-DP-projects.ipynb](DP-feature-extraction/compile-DP-projects.ipynb), the variables `nuc_project_path` need to be changed to reflect the desired nuc DeepProfiler project locations.
+Inside the notebook [compile-DP-projects.ipynb](DP-feature-extraction/compile-DP-projects.ipynb), the variable `nuc_project_path` needs to be changed to reflect the desired nuc DeepProfiler project locations.
 We used an external harddrive and therefore needed to use specific paths.
 These project paths will contain the DeepProfiler `config.json`, `index.csv`, cell locations, pre-trained model, and extracted features.
 
 This path also needs to be set in [2b.extract-dp-features.sh](2b.extract-dp-features.sh) by replacing `path/to/DP_nuc_project` with the same path used to set `nuc_project_path`.
 
-## Step 4: Compile DeepProfiler Project
+## Step 4: Compile and Run DeepProfiler Project
 
-In order to profile features with DeepProfiler, a project needs to be set up with a certain file structure and files.
+In order to extract features with DeepProfiler, a project needs to be set up with a certain file structure and files.
 In [compile-DP-projects.ipynb](DP-feature-extraction/compile-DP-projects.ipynb) we create the necessary project structure.
 We copy the config file ([cell_health_nuc_config.json](DP-feature-extraction/DP_files/cell_health_nuc_config.json)) to its corresponding project and the pretrained model ([efficientnet-b0_weights_tf_dim_ordering_tf_kernels_autoaugment.h5](DP-feature-extraction/DP_files/efficientnet-b0_weights_tf_dim_ordering_tf_kernels_autoaugment.h5)) to the project.
 We also compile an `index.csv` file necessary for DeepProfiler to load each image and `nuclei-locations` files necessary for DeepProfiler to find the single cells in each image.
@@ -119,17 +125,6 @@ We also compile an `index.csv` file necessary for DeepProfiler to load each imag
 More information on DeepProfiler project structure and necessary files can be found at the [DeepProfiler wiki](https://github.com/cytomining/DeepProfiler/wiki/2.-Project-structure).
 
 ```bash
-# Run this script to compile the DeepProfiler projects
-bash 2.compile-DP-projects.sh
-```
-
-## Step 5: Extract Features with DeepProfiler
-
-Change `path/to/DP_nuc_project` below to the `nuc_project_path` set in step 3.
-
-```sh
-# Run this script to extract features with DeepProfiler
-python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root path/to/DP_nuc_project --config cell_health_nuc_config.json profile
-
-python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-DP/ --config cell_health_nuc_config.json profile
+# Run this script to compile and run the DeepProfiler project
+bash 2b.extract-dp-features.sh
 ```
