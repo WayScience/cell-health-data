@@ -1,0 +1,9 @@
+name: 2.cp-feature-extraction-cell-health
+
+channels:
+  - conda-forge
+
+dependencies:
+  - conda-forge::python=3.8.13
+  - pip:
+    - cellprofiler==4.2.5

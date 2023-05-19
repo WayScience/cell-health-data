@@ -103,3 +103,49 @@ python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63
 # CellProfiler Feature Extraction
 
 We use [CellProfiler](https://github.com/CellProfiler) (GUI, verstion `4.2.4`) to extract features from the Cell Health data. 
+
+## Step 1: Setup CellProfiler Feature Extraction Environment
+
+### Step 1a: Create CellProfiler Feature Extraction Environment
+
+```sh
+# Run this command to create the conda environment for CellProfiler feature extraction
+conda env create -f 2.cp-feature-extraction-env.yml
+```
+
+### Step 1b: Activate Feature Extraction Environment
+
+```sh
+# Run this command to activate the conda environment for CellProfiler feature extraction
+
+conda activate 2.cp-feature-extraction-cell-health
+```
+
+## Step 2: Extract Features
+
+### Step 2a: Open CP GUI
+
+```sh
+# Run this command to open CP GUI
+
+cellprofiler
+```
+
+### Step 2b: Open CP Project
+
+In CP GUI, go to File -> Open Project and select the CP project at [CP_feature_extraction/process_CellHealth.cpproj](CP_feature_extraction/process_CellHealth.cpproj).
+
+### Step 2c: Set CP Project Paths
+
+1) In the `Images` module, add the following folders:
+- Folder with nuclei images (set in `0.image-download`)
+- Folder with nuclei segmentations (set in `1.segment-data`)
+
+2) In the `ExportToSpreadsheet` module, change the output file location to your desired CP feature output location.
+Make sure to right click the folder location and choose `Plate` to make the feature data from each plate output to separate folders.
+
+### Step 2d: Start CP Run
+
+In CP GUI, click `Analyze Images` to extract CP features for the entire Cell Health dataset.
+
+**Note**: This CP run requires lots of memory and time.
