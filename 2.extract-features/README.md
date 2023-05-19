@@ -2,9 +2,9 @@
 
 In this module, we present our pipeline for extracting features from the Cell Health data.
 
-### Feature Extraction
+### DeepProfiler Feature Extraction
 
-We use [DeepProfiler](https://github.com/cytomining/DeepProfiler), commit [`f12f39b`](https://github.com/cytomining/DeepProfiler/commit/f12f39b8a905b0bb40d343e21e89bfda537b710a), to extract features from the Cell Health data. 
+We use [DeepProfiler](https://github.com/cytomining/DeepProfiler) (commit [`f12f39b`](https://github.com/cytomining/DeepProfiler/commit/f12f39b8a905b0bb40d343e21e89bfda537b710a)) to extract features from the Cell Health data. 
 
 We use a [pretrained model](https://github.com/broadinstitute/luad-cell-painting/tree/main/outputs/efn_pretrained/checkpoint) from the [LUAD Cell Painting repository](https://github.com/broadinstitute/luad-cell-painting) with DeepProfiler.
 [Caicedo et al., 2022](https://www.molbiolcell.org/doi/10.1091/mbc.E21-11-0538) trained this model to extract features from Cell Painting data.
@@ -23,6 +23,12 @@ Both:
 `cell_health_nuc_config.json`:
 - `dataset: images: channels: [DNA, ER, RNA, AGP, Mito] -> dataset: images: channels: [DNA]` While the Cell Painting dataset has multiple channels for cell images, we are only interested in examining the DNA channel for the nuclei project.
 - `dataset: locations: box_size: 96 -> dataset: locations: box_size: 256` This change expands the size of the box around each cell that DeepProfiler interprets. This change helps DeepProfiler interpret nuclei from Cell Health data with the same context as it uses to interpret cells in [mitocheck_data](https://github.com/WayScience/mitocheck_data).
+
+### CellProfiler Feature Extraction
+
+We use [CellProfiler](https://github.com/CellProfiler) (GUI, verstion `4.2.4`) to extract features from the Cell Health data. 
+
+
 
 ## Step 1: Setup Feature Extraction Environment
 
