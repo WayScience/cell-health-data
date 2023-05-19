@@ -1,4 +1,4 @@
-name: 2.feature-extraction-cell-health
+name: 2.dp-feature-extraction-cell-health
 channels:
   - conda-forge
 dependencies:
