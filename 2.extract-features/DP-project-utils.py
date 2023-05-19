@@ -165,7 +165,7 @@ def compile_training_locations(
 
             print(f"Compiling locations for {plate} + {identifier}")
             frame_segmentations_path = pathlib.Path(
-                f"{segmentation_data_path}/{plate}/Images/{identifier}-{object}-segmented.tsv"
+                f"{segmentation_data_path}/{plate}/Images/{identifier}-{object}-locations.tsv"
             )
 
             # handle errors for no locations file/no data
@@ -173,12 +173,12 @@ def compile_training_locations(
                 frame_segmentations = pd.read_csv(
                     frame_segmentations_path, delimiter="\t"
                 )
-            except:
-                print(f"No segmentation data for {frame_segmentations_path.name}")
+            except Exception as e:
+                print(f"No segmentation data for {frame_segmentations_path}")
                 continue
             try:
                 frame_segmentations = frame_segmentations[
-                    ["Cell_ID", "Location_Center_X", "Location_Center_Y"]
+                    ["Location_Center_X", "Location_Center_Y"]
                 ]
             except KeyError:
                 print(f"No segmentations for {frame_segmentations_path}")
@@ -213,19 +213,19 @@ def compile_project(
     # make project dir
     project_path.mkdir(parents=True, exist_ok=True)
     
-    # copy necessary DP files from DP_files/ to DP project
-    config_name = f"cell_health_{object}_config.json"
-    copy_DP_files(project_path, config_name, checkpoint_name)
+    # # copy necessary DP files from DP_files/ to DP project
+    # config_name = f"cell_health_{object}_config.json"
+    # copy_DP_files(project_path, config_name, checkpoint_name)
     
-    # compile and save index.csv file to DP project
-    annotations = pd.read_csv(annotations_path)
+    # # compile and save index.csv file to DP project
+    # annotations = pd.read_csv(annotations_path)
     index_save_path = pathlib.Path(f"{project_path}/inputs/metadata/index.csv")
     index_save_path.parents[0].mkdir(parents=True, exist_ok=True)
-    print("compiling index.csv file...")
-    DP_images_path = pathlib.Path(f"{project_path}/inputs/images")
-    index_csv = compile_index_csv(images_load_path, DP_images_path, annotations, object)
-    index_csv.to_csv(index_save_path, index=False)
-    print("index.csv file saved!")
+    # print("compiling index.csv file...")
+    # DP_images_path = pathlib.Path(f"{project_path}/inputs/images")
+    # index_csv = compile_index_csv(images_load_path, DP_images_path, annotations, object)
+    # index_csv.to_csv(index_save_path, index=False)
+    # print("index.csv file saved!")
 
     # compile and save locations to DP project
     segmentation_data_path = pathlib.Path(

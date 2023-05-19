@@ -24,9 +24,6 @@ Both:
 - `dataset: images: channels: [DNA, ER, RNA, AGP, Mito] -> dataset: images: channels: [DNA]` While the Cell Painting dataset has multiple channels for cell images, we are only interested in examining the DNA channel for the nuclei project.
 - `dataset: locations: box_size: 96 -> dataset: locations: box_size: 256` This change expands the size of the box around each cell that DeepProfiler interprets. This change helps DeepProfiler interpret nuclei from Cell Health data with the same context as it uses to interpret cells in [mitocheck_data](https://github.com/WayScience/mitocheck_data).
 
-`cell_health_cyto_config.json`:
-- `dataset: locations: box_size: 96 -> dataset: locations: box_size: 128` This change expands the size of the box around each cell that DeepProfiler interprets. This change was recommended by Juan to improve performance.
-
 ## Step 1: Setup Feature Extraction Environment
 
 ### Step 1a: Create Feature Extraction Environment
@@ -72,7 +69,7 @@ We use Tensorflow GPU while processing mitocheck data.
 
 ## Step 3: Define Project Paths
 
-Inside the notebook [compile-DP-projects.ipynb](compile-DP-projects.ipynb), the variables `nuc_project_path` and `cyto_project_path` need to be changed to reflect the desired nuc/cyto DeepProfiler project locations.
+Inside the notebook [compile-DP-projects.ipynb](compile-DP-projects.ipynb), the variables `nuc_project_path` need to be changed to reflect the desired nuc DeepProfiler project locations.
 We used an external harddrive and therefore needed to use specific paths.
 These project paths will contain the DeepProfiler `config.json`, `index.csv`, cell locations, pre-trained model, and extracted features.
 
@@ -92,10 +89,12 @@ bash 2.compile-DP-projects.sh
 
 ## Step 5: Extract Features with DeepProfiler
 
-Change `path/to/DP_nuc_project` and `path/to/DP_cyto_project` below to the `nuc_project_path` and `cyto_project_path` set in step 3.
+Change `path/to/DP_nuc_project` below to the `nuc_project_path` set in step 3.
 
 ```sh
 # Run this script to extract features with DeepProfiler
 python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root path/to/DP_nuc_project --config cell_health_nuc_config.json profile
 python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root path/to/DP_cyto_project --config cell_health_cyto_config.json profile
+
+python3 -m deepprofiler --gpu 0 --exp efn_pretrained --root /media/roshankern/63af2010-c376-459e-a56e-576b170133b6/data/cell-health-nuc-DP/ --config cell_health_nuc_config.json profile
 ```
