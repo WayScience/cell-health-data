@@ -2,6 +2,7 @@
 # coding: utf-8
 
 # ### Import libraries
+# 
 
 # In[1]:
 
@@ -11,6 +12,7 @@ import subprocess
 
 
 # ### Extract CP features from each plate
+# 
 
 # In[2]:
 
@@ -36,9 +38,7 @@ for plate_path in nuclei_images_load_path.iterdir():
     for image_folder_path in plate_path.iterdir():
 
         # features folder that extracted CP features will be saved to
-        features_folder_path = pathlib.Path(
-            f"{features_save_path}/{plate_path.name}"
-        )
+        features_folder_path = pathlib.Path(f"{features_save_path}/{plate_path.name}")
         features_folder_path.mkdir(exist_ok=True, parents=True)
 
         # file to log CP output
