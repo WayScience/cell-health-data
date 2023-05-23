@@ -165,20 +165,20 @@ def compile_training_locations(
 
             print(f"Compiling locations for {plate} + {identifier}")
             frame_segmentations_path = pathlib.Path(
-                f"{segmentation_data_path}/{plate}/Images/{identifier}-{object}-segmented.tsv"
+                f"{segmentation_data_path}/{plate}/Images/{identifier}-{object}-locations.tsv"
             )
 
-            # handle errors for no locations file/no data
+            # handle errors for no locations file/no data without stopping compilation
             try:
                 frame_segmentations = pd.read_csv(
                     frame_segmentations_path, delimiter="\t"
                 )
-            except:
-                print(f"No segmentation data for {frame_segmentations_path.name}")
+            except Exception as e:
+                print(e)
                 continue
             try:
                 frame_segmentations = frame_segmentations[
-                    ["Cell_ID", "Location_Center_X", "Location_Center_Y"]
+                    ["Location_Center_X", "Location_Center_Y"]
                 ]
             except KeyError:
                 print(f"No segmentations for {frame_segmentations_path}")
