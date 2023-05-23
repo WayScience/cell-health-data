@@ -35,11 +35,12 @@ In [extract-cp-features.ipynb](CP-feature-extraction/extract-cp-features.ipynb),
 Features are output to `features_save_path` set above in step 3.
 
 ```bash
-# Run this script to compile and run the DeepProfiler project
+# Run this script to extract CP features
 bash 2a.extract-cp-features.sh
 ```
 
-**Note**: This CP run requires lots of memory and time.
+**Note**: [extract-cp-features.ipynb](CP-feature-extraction/extract-cp-features.ipynb) does not show all output as we ran this code elsewhere.
+On our machine, this pipeline took about 12 hours per plate (108 hours total).
 
 # DeepProfiler Feature Extraction
 
