@@ -3,6 +3,7 @@ import math
 import pathlib
 import uuid
 
+import numpy as np
 import pandas as pd
 
 
@@ -98,6 +99,9 @@ def load_cp_feature_data(cp_output_path: pathlib.Path, plate: str) -> pd.DataFra
 
     # load single-cell plate data using desired columns
     cp_plate = pd.read_csv(cp_plate_path, usecols=cols_to_load)
+    
+    # add plate metadata
+    cp_plate["Metadata_Plate"] = plate
 
     # convert well and field to one usable for merging
     cp_plate["Metadata_Well"] = cp_plate["Metadata_Well"].apply(format_cp_well)
@@ -136,7 +140,7 @@ def full_loc_map(dp_coord: tuple, cp_image_data_locations: pd.Series) -> tuple:
 def merge_CP_DP_image_data(
     cp_image_data: pd.DataFrame,
     dp_image_data: pd.DataFrame,
-    add_cell_uuid: bool = True,
+    add_cell_uuid: bool = False,
 ) -> pd.DataFrame:
     """
     merge CP and DP single-cell data from the same image (plate, well, site combination)
@@ -239,6 +243,10 @@ def merge_CP_DP_image_data(
             "DP__Metadata_Model",
         ]
     )
+    
+    # drop NA and inf rows (DP sometimes is unable to extract features but only for around 10 out of 100,000 cells)
+    merged_image_data.replace([np.inf, -np.inf], np.nan)
+    merged_image_data.dropna(inplace=True)
 
     # add cell uuid to merged data to give each cell a unique identifier
     if add_cell_uuid:

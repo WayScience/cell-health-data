@@ -21,6 +21,9 @@ Compressing and saving this merged data takes about 45 minutes per plate.
 Thus, this notebook takes about 9 hours to process all 9 plates.
 
 In [3b.normalize-merged-features.ipynb](3b.normalize-features/3b.normalize-merged-features.ipynb) we derive a normalization scaler from all negative control cells and apply this scaler to all single-cell feature data for each plate.
+**Note**: Loading and merging the features takes about 5 minutes per plate. 
+Compressing and saving this merged data takes about 45 minutes per plate. 
+Thus, this notebook takes about 7.5 hours to process all 9 plates.
 
 ## Step 1: Setup Feature Preprocessing Environment
 
