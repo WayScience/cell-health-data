@@ -6,7 +6,22 @@ import uuid
 import pandas as pd
 
 
-def format_cp_well(cp_well):
+def format_cp_well(cp_well: str) -> str:
+    """
+    Format well from CP output into that used by DP
+    Ex: r01c01 -> A1
+
+    Parameters
+    ----------
+    cp_well : str
+        well string in CP format
+
+    Returns
+    -------
+    str
+        well string in DP format
+    """
+
     row = int(cp_well[1:3])
     formatted_row = chr(64 + row)
 
@@ -15,17 +30,51 @@ def format_cp_well(cp_well):
     return f"{formatted_row}{col}"
 
 
-def format_cp_site(cp_site):
+def format_cp_site(cp_site: str) -> str:
+    """
+    Format site from CP output into that used by DP
+    Ex: f01 -> 1
+
+    Parameters
+    ----------
+    cp_site : str
+        site string in CP format
+
+    Returns
+    -------
+    str
+        site string in DP format
+    """
+
     # first, convert to int to remove any leading zeroes
     # next, convert to str to match DP format
     site = str(int(cp_site[1:3]))
+
     return site
 
 
-def load_cp_feature_data(cp_output_path: pathlib.Path, plate: str):
-    cp_plate_path = pathlib.Path(f"{cp_output_path}/Nuclei.csv")
-    cp_plate_cell_1 = pd.read_csv(cp_plate_path, nrows=1)
+def load_cp_feature_data(cp_output_path: pathlib.Path, plate: str) -> pd.DataFrame:
+    """
+    load CP output in format ready for merging with DP output
 
+    Parameters
+    ----------
+    cp_output_path : pathlib.Path
+        path to CP output folder (same as that set in CP project)
+    plate : str
+        name of plate that features are being loaded for
+
+    Returns
+    -------
+    pandas.DataFrame
+        single-cell data ready for merging with DP output
+    """
+
+    # set path to plate that we want to load
+    cp_plate_path = pathlib.Path(f"{cp_output_path}/Nuclei.csv")
+
+    # determine which columns to load from CP output csv
+    cp_plate_cell_1 = pd.read_csv(cp_plate_path, nrows=1)
     all_cols = cp_plate_cell_1.columns.to_list()
     cols_to_load = [
         "Metadata_Field",
@@ -33,7 +82,6 @@ def load_cp_feature_data(cp_output_path: pathlib.Path, plate: str):
         "Location_Center_X",
         "Location_Center_Y",
     ]
-
     # We only want to get CP data from the feature modules below (_ ensures it is found as module name)
     cp_feature_modules = [
         "AreaShape_",
@@ -43,30 +91,18 @@ def load_cp_feature_data(cp_output_path: pathlib.Path, plate: str):
         "RadialDistribution_",
         "Texture_",
     ]
-
     # remove CP columns that dont have a feature module as a substring
     for col in all_cols:
         if any(col.startswith(feature_module) for feature_module in cp_feature_modules):
             cols_to_load.append(col)
 
+    # load single-cell plate data using desired columns
     cp_plate = pd.read_csv(cp_plate_path, usecols=cols_to_load)
-
-    # insert plate at beginning of dataframe
-    # REMOVE WHEN WORKING WITH FINAL DATA
-    cp_plate["Metadata_Plate"] = plate
-    column_to_move = cp_plate.pop("Metadata_Plate")
-    cp_plate.insert(0, "Metadata_Plate", column_to_move)
-
-    # insert locations at beginning of dataframe
-    # REMOVE WHEN WORKING WITH FINAL DATA
-    column_to_move = cp_plate.pop("Location_Center_Y")
-    cp_plate.insert(0, "Location_Center_Y", column_to_move)
-    column_to_move = cp_plate.pop("Location_Center_X")
-    cp_plate.insert(0, "Location_Center_X", column_to_move)
 
     # convert well and field to one usable for merging
     cp_plate["Metadata_Well"] = cp_plate["Metadata_Well"].apply(format_cp_well)
     cp_plate["Metadata_Field"] = cp_plate["Metadata_Field"].apply(format_cp_site)
+    # rename field column to site (name used by DP)
     cp_plate = cp_plate.rename(columns={"Metadata_Field": "Metadata_Site"})
 
     return cp_plate
@@ -102,6 +138,33 @@ def merge_CP_DP_image_data(
     dp_image_data: pd.DataFrame,
     add_cell_uuid: bool = True,
 ) -> pd.DataFrame:
+    """
+    merge CP and DP single-cell data from the same image (plate, well, site combination)
+
+    Parameters
+    ----------
+    cp_image_data : pd.DataFrame
+        cp single-cell data from the image to merge cells from
+    dp_image_data : pd.DataFrame
+        dp single-cell data from the image to merge cells from
+    add_cell_uuid : bool, optional
+        whether or not single-cell UUIDs should be added (useful for identifying a particular cell), by default True
+
+    Returns
+    -------
+    pd.DataFrame
+        merged single-cell data for the desired image
+
+    Raises
+    ------
+    IndexError
+        thrown if CP and DP data do not have the same number of cells
+        (they must have the same number to merge cell data)
+    """
+
+    # hide warning for pandas chained assignment
+    # this hides the warnings produced by main necessary chained assingments with pandas (can't use .iloc[] for some operations)
+    pd.options.mode.chained_assignment = None
 
     # covert x and y coordiantes to integers
     cp_image_data[["Location_Center_X", "Location_Center_Y"]] = cp_image_data[
@@ -115,10 +178,6 @@ def merge_CP_DP_image_data(
     # if batch data have different number of cells, raise an error because they must not have close segmentations
     if cp_image_data.shape[0] != dp_image_data.shape[0]:
         raise IndexError("Batch data have different number of rows (cells)!")
-
-    # hide warning for pandas chained assignment
-    # this hides the warnings produced by main necessary chained assingments with pandas (can't use .iloc[] for some operations)
-    pd.options.mode.chained_assignment = None
 
     # get cp and dp column names
     cp_columns = cp_image_data.columns
@@ -197,5 +256,5 @@ def merge_CP_DP_image_data(
     # flatten sorted cols list
     sorted_cols = [col for sublist in sorted_cols for col in sublist]
 
-    # add merged image data to the compilation list
+    # return formatted merged data
     return merged_image_data[sorted_cols]
