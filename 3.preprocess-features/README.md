@@ -4,7 +4,7 @@ In this module, we present our pipeline for preprocessing features.
 
 ### Feature Preprocessing
 
-We use [PyCytominer](https://github.com/cytomining/pycytominer) to compile single-cell features.
+We use [PyCytominer](https://github.com/cytomining/pycytominer) to compile DeepProfiler single-cell features.
 
 We use [sklearn.preprocessing.StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) to derive a normalizion scaler from all negative control features.
 `StandardScaler()` standardizes features by removing the mean and scaling to unit variance.
