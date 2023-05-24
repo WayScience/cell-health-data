@@ -10,11 +10,16 @@ We use [sklearn.preprocessing.StandardScaler](https://scikit-learn.org/stable/mo
 `StandardScaler()` standardizes features by removing the mean and scaling to unit variance.
 
 [Caicedo et al, 2017](https://www.nature.com/articles/nmeth.4397) explain why the negative control features are a good normalization population for our use case:
+
 > When choosing the normalizing population, we suggest the use of control samples (assuming that they are present in sufficient quantity), because the presence of dramatic phenotypes may confound results. This procedure is good practice regardless of the normalization being performed within plates or across the screen.
 
 We derive a normalization scaler per plate and normalize each plate with their respective scaler so any plate batch effects are corrected.
 
 In [3a.merge-cp-dp-features.ipynb](3a.merge-features/3a.merge-cp-dp-features.ipynb) we compile and merge all CellProfiler and DeepProfiler features for each plate.
+**Note**: Loading and merging the features takes about 15 minutes per plate. 
+Compressing and saving this merged data takes about 45 minutes per plate. 
+Thus, this notebook takes about 9 hours to process all 9 plates.
+
 In [3b.normalize-merged-features.ipynb](3b.normalize-features/3b.normalize-merged-features.ipynb) we derive a normalization scaler from all negative control cells and apply this scaler to all single-cell feature data for each plate.
 
 ## Step 1: Setup Feature Preprocessing Environment
