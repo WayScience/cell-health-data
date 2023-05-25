@@ -22,10 +22,13 @@ def format_cp_well(cp_well: str) -> str:
     str
         well string in DP format
     """
-
+    
+    # get row num from second and third characters
     row = int(cp_well[1:3])
+    # convert row number to a letter (0->A, 1->B, etc)
     formatted_row = chr(64 + row)
 
+    # get col num from fourth and first characters
     col = int(cp_well[4:6])
 
     return f"{formatted_row}{col}"
