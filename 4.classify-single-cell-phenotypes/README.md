@@ -28,6 +28,35 @@ conda env create -f 4.classification-env.yml
 conda activate 4.classify-single-cell-phenotypes
 ```
 
+## Step 2: Download Models from `phenotypic_profiling_model`
+
+We use models from the [phenotypic_profiling_model](https://github.com/WayScience/phenotypic_profiling_model) repository to derive the single-cell phenotypes.
+Use the commands below to download the [models/](https://github.com/WayScience/phenotypic_profiling_model/tree/main/2.train_model/models) folder from this repository.
+
+```sh
+# Run these commands to download models from phenotypic_profiling_model
+
+# make sure you are inside 4.classify-single-cell-phenotypes/
+cd 4.classify-single-cell-phenotypes/
+
+# make download directory
+mkdir phenotypic_profiling_model
+cd phenotypic_profiling_model
+
+# set up folder as github repo
+git init
+git remote add origin https://github.com/WayScience/phenotypic_profiling_model.git
+
+# enable git repo to download specific directories
+git config core.sparseCheckout true
+
+# set folder to be downloaded
+echo "2.train_model/models" > .git/info/sparse-checkout 
+
+# download this folder from the repo
+git pull origin cp-feature-refactor # cp-feature-refactor should be changed to main once PR is merged
+```
+
 ## Step 2: Define Folder Paths
 
 Inside the notebook [classify-single-cell-phenotypes.ipynb](classify-single-cell-phenotypes.ipynb), the variable `normlized_plates_path` needs to be changed the reflect the paths of the normalized features from [3.preprocess-features](3.preprocess-features).
