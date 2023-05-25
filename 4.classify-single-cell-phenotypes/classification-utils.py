@@ -8,7 +8,25 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 
-def get_probas_dataframe(plate_features, model, feature_type):
+def get_probas_dataframe(plate_features: pd.DataFrame, model: LogisticRegression, feature_type: str) -> pd.DataFrame:
+    """
+    Get probabilites for plate features from a phenotypic classification model
+
+    Parameters
+    ----------
+    plate_features : pd.DataFrame
+        plate features to classify
+    model : LogisticRegression
+        model to use for plate feature classification
+    feature_type : str
+        type of features to use for classification.
+        CP, DP, or CP_and_DP
+
+    Returns
+    -------
+    pd.DataFrame
+        dataframe with single-cell probabilities for classes from given model
+    """
 
     # determine which feature columns should be loaded depending on feature type
     # if there is no "and" we can use feature type as prefix
