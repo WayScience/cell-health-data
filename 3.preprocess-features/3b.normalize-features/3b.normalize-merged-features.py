@@ -58,7 +58,9 @@ for merged_single_cell_plate_path in merged_features_save_path.iterdir():
 
     # load plate single-cell data
     print(f"Loading single-cell data...")
-    plate_merged_single_cells = pd.read_csv(merged_single_cell_plate_path, compression="gzip", engine="pyarrow")
+    plate_merged_single_cells = pd.read_csv(
+        merged_single_cell_plate_path, compression="gzip", engine="pyarrow"
+    )
 
     # create per-plate normalization scaler from the normalization population
     print(f"Deriving normalization scaler...")
@@ -91,6 +93,10 @@ for merged_single_cell_plate_path in merged_features_save_path.iterdir():
 
     # compress and save merged single-cell data
     print(f"Saving normalized features...")
-    normalized_merged_plate_single_cells_save_path = pathlib.Path(f"{normalized_merged_features_save_path}/{plate}-normalized-merged-single-cell.csv.gz")
-    plate_merged_single_cells.to_csv(normalized_merged_plate_single_cells_save_path, compression="gzip", index=False)
+    normalized_merged_plate_single_cells_save_path = pathlib.Path(
+        f"{normalized_merged_features_save_path}/{plate}-normalized-merged-single-cell.csv.gz"
+    )
+    plate_merged_single_cells.to_csv(
+        normalized_merged_plate_single_cells_save_path, compression="gzip", index=False
+    )
 

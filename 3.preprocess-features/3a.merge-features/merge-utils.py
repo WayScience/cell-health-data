@@ -99,7 +99,7 @@ def load_cp_feature_data(cp_output_path: pathlib.Path, plate: str) -> pd.DataFra
 
     # load single-cell plate data using desired columns
     cp_plate = pd.read_csv(cp_plate_path, usecols=cols_to_load)
-    
+
     # add plate metadata
     cp_plate["Metadata_Plate"] = plate
 
@@ -243,7 +243,7 @@ def merge_CP_DP_image_data(
             "DP__Metadata_Model",
         ]
     )
-    
+
     # drop NA and inf rows (DP sometimes is unable to extract features but only for around 10 out of 100,000 cells)
     merged_image_data.replace([np.inf, -np.inf], np.nan)
     merged_image_data.dropna(inplace=True)
