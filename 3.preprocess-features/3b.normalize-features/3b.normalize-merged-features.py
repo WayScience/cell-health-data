@@ -56,10 +56,26 @@ for merged_single_cell_plate_path in merged_features_save_path.iterdir():
     plate = merged_single_cell_plate_path.name.split("-")[0]
     print(f"Normalizing plate {plate}...")
 
+    # load in one row to create datatypes dictionary for faster loading
+    first_row_data = pd.read_csv(
+        merged_single_cell_plate_path, compression="gzip", nrows=1
+    )
+    metadata_cols = [col for col in first_row_data.columns if "P__" not in col]
+    feature_cols = [col for col in first_row_data.columns if "P__" in col]
+
+    # specify datatypes for metadata/feature columns
+    metadata_dtypes = {metadata_col: str for metadata_col in metadata_cols}
+    feature_dtypes = {feature_col: np.float32 for feature_col in feature_cols}
+    # combine both dictionaries
+    plate_dtypes = {**metadata_dtypes, **feature_dtypes}
+
     # load plate single-cell data
     print(f"Loading single-cell data...")
     plate_merged_single_cells = pd.read_csv(
-        merged_single_cell_plate_path, compression="gzip", engine="pyarrow"
+        merged_single_cell_plate_path,
+        compression="gzip",
+        dtype=plate_dtypes,
+        low_memory=True,
     )
 
     # create per-plate normalization scaler from the normalization population

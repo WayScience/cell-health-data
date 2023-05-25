@@ -98,7 +98,7 @@ def load_cp_feature_data(cp_output_path: pathlib.Path, plate: str) -> pd.DataFra
             cols_to_load.append(col)
 
     # load single-cell plate data using desired columns
-    cp_plate = pd.read_csv(cp_plate_path, usecols=cols_to_load)
+    cp_plate = pd.read_csv(cp_plate_path, usecols=cols_to_load, low_memory=True)
 
     # add plate metadata
     cp_plate["Metadata_Plate"] = plate
