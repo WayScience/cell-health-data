@@ -152,7 +152,7 @@ def merge_CP_DP_image_data(
     dp_image_data : pd.DataFrame
         dp single-cell data from the image to merge cells from
     add_cell_uuid : bool, optional
-        whether or not single-cell UUIDs should be added (useful for identifying a particular cell), by default True
+        whether or not single-cell UUIDs should be added (useful for identifying a particular cell), by default False
 
     Returns
     -------
