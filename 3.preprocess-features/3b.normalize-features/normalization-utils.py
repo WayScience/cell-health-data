@@ -21,8 +21,8 @@ def get_normalization_scaler(plate_merged_single_cells: pd.DataFrame) -> Standar
 
     # find all cells that have had no reagent applied
     negative_control_single_cells = plate_merged_single_cells.loc[
-        plate_merged_single_cells["Metadata_Reagent"] == "ARID1B-2"
-    ]  # CHANGE TO "no-reagent"
+        plate_merged_single_cells["Metadata_Reagent"] == "no-reagent"
+    ]
     # get features for these negative control cells
     feature_cols = [
         col for col in negative_control_single_cells.columns.to_list() if "P__" in col

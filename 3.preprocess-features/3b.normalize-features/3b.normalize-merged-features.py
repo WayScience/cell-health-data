@@ -51,6 +51,7 @@ scaler_save_dir.mkdir(parents=True, exist_ok=True)
 # In[3]:
 
 
+# iterate through each merged plate, find normalization scaler from negative control cells, and apply this scaler to all cells
 for merged_single_cell_plate_path in merged_features_save_path.iterdir():
     # get only plate name from merged features file name
     plate = merged_single_cell_plate_path.name.split("-")[0]

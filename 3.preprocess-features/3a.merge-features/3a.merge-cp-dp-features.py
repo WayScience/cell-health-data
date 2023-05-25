@@ -49,6 +49,7 @@ merged_features_save_path.mkdir(parents=True, exist_ok=True)
 # In[3]:
 
 
+# loop through each plate in CP output, find corresponding DP features, and merge these single-cell features!
 for cp_output_path in cp_features_save_path.iterdir():
     plate = cp_output_path.name
     print(f"Merging plate {plate} ...")
