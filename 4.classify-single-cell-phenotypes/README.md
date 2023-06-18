@@ -60,9 +60,11 @@ git pull origin cp-feature-refactor # cp-feature-refactor should be changed to m
 
 ## Step 3: Define Folder Paths
 
-Inside the notebook [classify-single-cell-phenotypes.ipynb](classify-single-cell-phenotypes.ipynb), the variable `normlized_plates_path` needs to be changed the reflect the paths of the normalized features from [3.preprocess-features](3.preprocess-features).
+Inside the notebook [4a.classify-single-cell-phenotypes.ipynb](4a.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes.ipynb), the variable `normlized_plates_path` needs to be changed the reflect the paths of the normalized features from [3.preprocess-features](3.preprocess-features).
 The variable `classifications_save_path` also needs to be set to specify where the model classficiations are saved.
 We used an external harddrive and therefore needed to use specific paths.
+
+Inside the notebook [4b.derive-classification-profiles.ipynb](4b.derive-classification-profiles/4b.derive-classification-profiles.ipynb), the path variables in the 4th cell need to be changed to reflect the load/save paths of the single cell classifications and classficiation profiles respectfully.
 
 ## Step 3: Classify Cell Health Features
 
