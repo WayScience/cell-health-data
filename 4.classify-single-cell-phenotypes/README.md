@@ -4,10 +4,14 @@ In this module, we present our pipeline for classifying features.
 
 ### Feature Classification
 
-We use the models trained in [phenotypic_profiling](https://github.com/WayScience/phenotypic_profiling_model) to classify nucleus features from Cell Health Data.
+We use the models trained in [phenotypic_profiling_model](https://github.com/WayScience/phenotypic_profiling_model) to classify nucleus features from Cell Health Data.
 The final models have the highest average cross-validated F1 score while the shuffled baseline models were trained on feature values shuffled independent of their feature label (and thus serve as a baseline for training on features with no correlation).
 
 The specified classification models will be downloaded to [phenotypic_profiling_models/](phenotypic_profiling_models) and loaded from these files.
+
+In [4a.classify-single-cell-phenotypes.ipynb](4a.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes.ipynb), single cell features are classified with each of the downloaded models mentioned above.
+In [4b.derive-classification-profiles.ipynb](4b.derive-classification-profiles/4b.derive-classification-profiles.ipynb), these single cell classifications are averaged across perturbation to create classification profiles.
+These classification profiles are further analyzed in [phenotypic_profiling_model](https://github.com/WayScience/phenotypic_profiling_model).
 
 ## Step 1: Setup Feature Classification Environment
 
