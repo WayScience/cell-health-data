@@ -66,7 +66,7 @@ We used an external harddrive and therefore needed to use specific paths.
 
 Inside the notebook [4b.derive-classification-profiles.ipynb](4b.derive-classification-profiles/4b.derive-classification-profiles.ipynb), the path variables in the 4th cell need to be changed to reflect the load/save paths of the single cell classifications and classficiation profiles respectfully.
 
-## Step 3: Classify Cell Health Features
+## Step 4: Classify Cell Health Features
 
 ```sh
 # Run this script to classify Cell Health features
