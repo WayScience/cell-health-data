@@ -13,11 +13,13 @@ import pathlib
 import urllib.request
 import joblib
 import importlib
+import sys
 
 import pandas as pd
 import numpy as np
 
-classification_utils = importlib.import_module("classification-utils")
+sys.path.append("../")
+import classification_utils
 
 
 # ### Define hard drive path and classifications output path
