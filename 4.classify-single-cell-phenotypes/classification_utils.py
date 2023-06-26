@@ -12,7 +12,7 @@ def get_probas_dataframe(
     plate_features: pd.DataFrame, model: LogisticRegression, feature_type: str
 ) -> pd.DataFrame:
     """
-    Get probabilites for plate features from a phenotypic classification model
+    Get probabilities for plate features from a phenotypic classification model
 
     Parameters
     ----------
