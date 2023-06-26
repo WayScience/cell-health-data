@@ -15,7 +15,7 @@ def get_probas_dataframe(
     feature_type: Literal["CP", "DP", "CP_and_DP"],
 ) -> pd.DataFrame:
     """
-    Get probabilites for plate features from a phenotypic classification model
+    Get probabilities for plate features from a phenotypic classification model
 
     Parameters
     ----------
@@ -35,7 +35,7 @@ def get_probas_dataframe(
 
     # determine which feature columns should be loaded depending on feature type
     # if there is no "and" we can use feature type as prefix
-    if "and" not in feature_type:
+    if feature_type != "CP_and_DP":
         cols_to_load = [
             col
             for col in plate_features.columns.to_list()
