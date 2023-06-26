@@ -3,13 +3,16 @@ utils for classifying cells from Cell Health Data
 """
 
 import pathlib
-import numpy as np
+from typing import Literal
+
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 
 def get_probas_dataframe(
-    plate_features: pd.DataFrame, model: LogisticRegression, feature_type: str
+    plate_features: pd.DataFrame,
+    model: LogisticRegression,
+    feature_type: Literal["CP", "DP", "CP_and_DP"],
 ) -> pd.DataFrame:
     """
     Get probabilites for plate features from a phenotypic classification model
@@ -38,7 +41,7 @@ def get_probas_dataframe(
             for col in plate_features.columns.to_list()
             if f"{feature_type}__" in col
         ]
-    # if there is an "and" we should all features (which all have "P__" prefix)
+    # if there is an "and" we should use all features (which all have "P__" prefix)
     else:
         cols_to_load = [col for col in plate_features.columns.to_list() if "P__" in col]
 
