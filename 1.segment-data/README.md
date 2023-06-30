@@ -1,6 +1,6 @@
 # Segment Cell Painting Images
 
-In this module, we present our pipeline for segmenting nuclei and cyoplasm from the Cell Health data.
+In this module, we present our pipeline for segmenting nuclei and cytoplasm from the Cell Health data.
 
 ### Segmentation
 
@@ -59,14 +59,7 @@ With our parameters, CellPose correctly segments both cells (right).
 
 ![Cytoplasm Compiled](imgs/cyto_compiled.png "Cytoplasm Compiled")
 
-### Cell Identification
-
-After finding the nuclei center coordinates and the cytoplasm outlines, we determine which nuclei and cytoplasms are related.
-First, we assign a `Cell_ID` to every cytoplasm.
-Then, we create a [matplotlib.path](https://matplotlib.org/stable/api/path_api.html) (polygon) from cytoplasm outlines.
-If any nuclei center coordinates are within the cytoplasm polygon, they are assigned the same `Cell_ID` as the cytoplasm.
-We discard any cytoplasm that does not have an associated nucleus.
-This controls for segmentation errors (every cytoplasm must have at least one nucleus).
+Although we found these optimal cytoplasm segmentation parameters, cyotplasm segmentation has not yet been implemented in this pipeline.
 
 ## Step 1: Setup Segmentation Environment
 
@@ -101,8 +94,8 @@ We used an external harddrive and therefore needed to use specific paths.
 bash 1.segment-data.sh
 ```
 
-**Note:** With GPU enabled, our estimated run time was about **100 hours** to segment all Cell Health data.
-The total data for all segmentation data are about **20 GB**.
+**Note:** With GPU enabled, our estimated run time was about **50 hours** to segment all Cell Health data.
+The total data for all segmentation data are about **600 GB**.
 
 Our runtime was heavily GPU dependent.
 We use a NVIDIA GeForce RTX 3060 with the following specificaitons:

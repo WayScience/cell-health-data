@@ -1,7 +1,0 @@
-name: 2.feature-extraction-cell-health
-channels:
-  - conda-forge
-dependencies:
-  - conda-forge::python=3.8.13
-  - conda-forge::jupyter=1.0.0
-  - conda-forge::pandas=1.4.2
