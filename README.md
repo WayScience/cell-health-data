@@ -4,7 +4,7 @@
 This is a data repository storing instructions on how to:
 
 0. Download the Cell Health Cell Painting dataset ([IDR0080](https://idr.openmicroscopy.org/webclient/?show=screen-2701))
-1. Perform nuclei segmentation
+1. Perform single nuclei segmentation
 2. Extract single cell embeddings
     - Using CellProfiler
     - Using DeepProfiler
