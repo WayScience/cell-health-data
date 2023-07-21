@@ -8,7 +8,7 @@ This is a data repository storing instructions on how to:
 2. Extract single cell embeddings
     - Using CellProfiler
     - Using DeepProfiler
-3. Prerocess both kinds of embeddings using pycytominer
+3. Preprocess both kinds of embeddings using pycytominer
 4. Classify single-cell phenotypes using models from the [phenotypic_profiling_model](https://github.com/WayScience/phenotypic_profiling_model/tree/main) repository.
 
 These data were originally used as part of the publication [Way et al. 2021](https://doi.org/10.1091/mbc.E20-12-0784).
