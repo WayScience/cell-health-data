@@ -55,7 +55,7 @@ git config core.sparseCheckout true
 echo "2.train_model/models" > .git/info/sparse-checkout 
 
 # download this folder from the repo
-git pull origin cp-feature-refactor # cp-feature-refactor should be changed to main once PR is merged
+git pull origin main
 ```
 
 ## Step 3: Define Folder Paths
