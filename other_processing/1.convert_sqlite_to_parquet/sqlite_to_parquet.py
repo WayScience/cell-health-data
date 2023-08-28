@@ -35,12 +35,15 @@ def convert_to_parquet(file_path: str) -> None:
     parquet_dir.mkdir(exist_ok=True)
     dest_path = parquet_dir / f"{file_path_obj.stem}.parquet"
 
+    # Since this is cell-health data, we need to use sqlite-clean before 
+    # submitting to cytotable.convert()
+    # 
+    # Here is the related issue:
+    # https://github.com/cytomining/CytoTable/issues/38
+    #
+    # This step will be removed once this issue is solved.
+
     # converting cell-health sqlite data into parquet files
-    print(file_path)
-    print(str(dest_path))
-    print("parquet")
-    print("sqlite")
-    exit()
     cytotable.convert(
         source_path=file_path,
         dest_path=str(dest_path),
