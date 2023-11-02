@@ -37,8 +37,8 @@ Use the commands below to download the [models/](https://github.com/WayScience/p
 ```sh
 # Run these commands to download models from phenotypic_profiling_model
 
-# make sure you are inside 4.classify-single-cell-phenotypes/
-cd 4.classify-single-cell-phenotypes/
+# make sure you are inside 4.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes/
+cd 4.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes/
 
 # make download directory
 mkdir phenotypic_profiling_model
