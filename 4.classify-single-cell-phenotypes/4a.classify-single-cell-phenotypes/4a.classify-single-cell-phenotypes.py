@@ -110,12 +110,17 @@ def get_probas_dataframe(
 
 # In[4]:
 
-
+good_plates = [
+    "SQ00014610", "SQ00014611", "SQ00014612",
+    "SQ00014614", "SQ00014615", "SQ00014616", "SQ00014618"
+]
 # iterate through plates so each plate data only needs to be loaded once
 for normalized_plate_path in normalized_plates_path.iterdir():
 
     # get plate name from normalized data path
     plate = normalized_plate_path.name.split("-")[0]
+    if plate in good_plates:
+        continue
     print(f"Getting phenotypic_class_probabilities for plate {plate}...")
 
     # determine what type columns are
