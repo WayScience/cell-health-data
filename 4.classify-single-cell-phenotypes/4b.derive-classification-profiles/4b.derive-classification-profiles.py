@@ -57,7 +57,7 @@ cell_health_plate_classifications = pathlib.Path(
     f"{base_dir_path}/cell-health-plate-classifications"
 )
 classification_profiles_save_dir = pathlib.Path(
-    f"{base_dir_path}/new-cell-health-plate-classification-profiles"
+    f"{base_dir_path}/cell-health-plate-classification-profiles"
 )
 
 MCM_classifications = pathlib.Path(
