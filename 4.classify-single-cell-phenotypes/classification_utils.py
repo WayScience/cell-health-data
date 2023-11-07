@@ -12,7 +12,7 @@ from sklearn.linear_model import LogisticRegression
 def get_probas_dataframe(
     plate_features: pd.DataFrame,
     model: LogisticRegression,
-    feature_type: Literal["CP", "DP", "CP_and_DP"],
+    feature_type: Literal["CP", "DP", "CP_and_DP", "CP_areashape_only", "CP_zernike_only"],
 ) -> pd.DataFrame:
     """
     Get probabilities for plate features from a phenotypic classification model
@@ -25,28 +25,30 @@ def get_probas_dataframe(
         model to use for plate feature classification
     feature_type : str
         type of features to use for classification.
-        CP, DP, or CP_and_DP
+        CP, DP, CP_and_DP, CP_areashape_only, CP_zernike_only
 
     Returns
     -------
     pd.DataFrame
         dataframe with single-cell probabilities for classes from given model
     """
+    
+    all_cols = plate_features.columns.to_list()
 
     # determine which feature columns should be loaded depending on feature type
-    # if there is no "and" we can use feature type as prefix
-    if feature_type != "CP_and_DP":
-        cols_to_load = [
-            col
-            for col in plate_features.columns.to_list()
-            if f"{feature_type}__" in col
-        ]
-    # if there is an "and" we should use all features (which all have "P__" prefix)
-    else:
-        cols_to_load = [col for col in plate_features.columns.to_list() if "P__" in col]
+    if "CP" in feature_type:
+        feature_cols = [col for col in all_cols if "CP__" in col]
+        if "zernike_only" in feature_type:
+            feature_cols = [col for col in feature_cols if "Zernike" in col]
+        if "areashape_only" in feature_type:
+            feature_cols = [col for col in feature_cols if "AreaShape" in col]
+        if "_and_DP" in feature_type:
+            feature_cols = [col for col in all_cols if "P__" in col]
+    elif  "DP" in feature_type:
+        feature_cols = [col for col in all_cols if "DP__" in col]
 
     # load these particular features and get the values
-    single_cell_features = plate_features[cols_to_load].values
+    single_cell_features = plate_features[feature_cols].values
 
     # get and return the predicted probabilities
     probas_dataframe = pd.DataFrame(
