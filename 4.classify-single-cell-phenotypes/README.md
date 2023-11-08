@@ -72,3 +72,7 @@ Inside the notebook [4b.derive-classification-profiles.ipynb](4b.derive-classifi
 # Run this script to classify Cell Health features
 bash 4.classify-single-cell-phenotypes.sh
 ```
+
+## Ouputs
+
+The output files and structures are defined in [4a.classify-single-cell-phenotypes/README.md](4a.classify-single-cell-phenotypes/README.md) and [4b.derive-classification-profiles/README.md](4b.derive-classification-profiles/README.md).
