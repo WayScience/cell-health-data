@@ -15,7 +15,7 @@ For more information on model training and type see [phenotypic_profiling_model/
 
 Each compressed csv file output by this module contains rows of single-cell metadata (location, perturbation, etc) and feature classification probabilities, as derived by the particular model.
 There is one compressed csv file for each of the nine plates in the Cell Health dataset.
-The contents of the compressed csv file containing OutOfFocus model predictions from plate SQ00014613 are shown below:
+The contents of the compressed csv file containing `OutOfFocus` model predictions from plate `SQ00014613` are shown below:
 
 | Location_Center_X | Location_Center_Y | Metadata_Site | Metadata_Well | Metadata_Plate | Metadata_Plate_Map_Name | Metadata_Reagent | OutOfFocus | OutOfFocus Negative |
 |-------------------|-------------------|---------------|---------------|----------------|--------------------------|------------------|------------|---------------------|
@@ -24,3 +24,8 @@ The contents of the compressed csv file containing OutOfFocus model predictions 
 | 1571.713          | 30.771            | 4             | G18           | SQ00014613     | SQ00014613_G18_04        | ARID1B-2         | 0.191      | 0.809               |
 | ...          | ...            | ...             | ...           | ...     | ...        | ...         | ...      | ...               |
 | 1535.734          | 55.748            | 9             | P21           | SQ00014613     | SQ00014613_P21_09        | PSMA1-1         | 0.385      | 0.615               |
+
+## File Structure
+
+The output file structure of this module mirrors the structure of the models hosted at [phenotypic_profiling_model/2.train_model/models](https://github.com/WayScience/phenotypic_profiling_model/tree/main/2.train_model/models), with folders contianing plate classifications in place of the models.
+This file structure is as follows:
