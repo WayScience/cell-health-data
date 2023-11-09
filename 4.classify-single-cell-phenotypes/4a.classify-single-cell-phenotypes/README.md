@@ -29,3 +29,28 @@ The contents of the compressed csv file containing `OutOfFocus` model prediction
 
 The output file structure of this module mirrors the structure of the models hosted at [phenotypic_profiling_model/2.train_model/models](https://github.com/WayScience/phenotypic_profiling_model/tree/main/2.train_model/models), with folders contianing plate classifications in place of the models.
 This file structure is as follows:
+
+```
+output_dir/
+├── multi_class_models/
+│ ├── final__CP__balanced/
+│ ├── ...
+│ └── shuffled_baseline__CP_and_DP__unbalanced/
+│ │ ├── SQ00014610__cell_classifications.csv.gz
+│ │ ├── ...
+│ │ └── SQ00014610__cell_classifications.csv.gz
+├── single_class_models/
+│ ├── Anaphase_models/
+│ ├── ...
+│ └── OutOfFocus_models/
+│ | ├── final__CP__balanced/
+│ | ├── ...
+│ | └── shuffled_baseline__CP_and_DP__unbalanced/
+│ | │ ├── SQ00014610__cell_classifications.csv.gz
+│ | │ ├── ...
+│ | │ └── SQ00014610__cell_classifications.csv.gz
+
+```
+
+Each model is identified by its `model_type`, `feature_type`, and `balance` which are the name of the model's folder (with `__` as a delimiter).
+Single-class models are also stratified by the phenotypic class they are trained with (anaphase, out of focus, etc).
