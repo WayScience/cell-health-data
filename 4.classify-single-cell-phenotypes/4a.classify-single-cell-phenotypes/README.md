@@ -28,7 +28,8 @@ The contents of the compressed csv file containing `OutOfFocus` model prediction
 ## File Structure
 
 The output file structure of this module mirrors the structure of the models hosted at [phenotypic_profiling_model/2.train_model/models](https://github.com/WayScience/phenotypic_profiling_model/tree/main/2.train_model/models), with folders contianing plate classifications in place of the models.
-This file structure is as follows:
+
+The output structure is as follows:
 
 ```
 output_dir/
@@ -49,7 +50,6 @@ output_dir/
 │ | │ ├── SQ00014610__cell_classifications.csv.gz
 │ | │ ├── ...
 │ | │ └── SQ00014610__cell_classifications.csv.gz
-
 ```
 
 Each model is identified by its `model_type`, `feature_type`, and `balance` which are the name of the model's folder (with `__` as a delimiter).
