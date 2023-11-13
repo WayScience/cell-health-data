@@ -9,7 +9,7 @@ Follow the steps in [4.classify-single-cell-phenotypes/README.md](../README.md) 
 ## File Description
 
 This module outputs compressed csv files containing the classification probabilities of preprocessed Cell-Health features output by [3.preprocess-features](../../3.preprocess-features/).
-These classifications are derived per-plate by each of the models created in the [phenotypic_profiling](https://github.com/WayScience/phenotypic_profiling_model) repository.
+These classifications are derived per plate by each of the models created in the [phenotypic_profiling](https://github.com/WayScience/phenotypic_profiling_model) repository.
 These models include multi-class models (16 output probabilities, 1 for each phenotypic class) and single-class models (2 output probabilities, positive and negative probabilities for the model's particular phenotypic class).
 For more information on model training and type see [phenotypic_profiling_model/2.train_model](https://github.com/WayScience/phenotypic_profiling_model/tree/main/2.train_model).
 
