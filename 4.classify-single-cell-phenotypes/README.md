@@ -13,6 +13,9 @@ In [4a.classify-single-cell-phenotypes.ipynb](4a.classify-single-cell-phenotypes
 In [4b.derive-classification-profiles.ipynb](4b.derive-classification-profiles/4b.derive-classification-profiles.ipynb), these single cell classifications are averaged across perturbation to create classification profiles.
 These classification profiles are further analyzed in [phenotypic_profiling_model](https://github.com/WayScience/phenotypic_profiling_model).
 
+**Note:** The [4a.classify-single-cell-phenotypes.ipynb](4a.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes.ipynb) and [4b.derive-classification-profiles.ipynb](4b.derive-classification-profiles/4b.derive-classification-profiles.ipynb) were evaluated, but their respective python scripts were run to save memory.
+Thus, the outputs for these notebooks are incomplete.
+
 ## Step 1: Setup Feature Classification Environment
 
 ### Step 1a: Create Feature Classification Environment

@@ -40,9 +40,9 @@ def get_probas_dataframe(
         feature_cols = [col for col in all_cols if "CP__" in col]
         if "zernike_only" in feature_type:
             feature_cols = [col for col in feature_cols if "Zernike" in col]
-        if "areashape_only" in feature_type:
+        elif "areashape_only" in feature_type:
             feature_cols = [col for col in feature_cols if "AreaShape" in col]
-        if "_and_DP" in feature_type:
+        elif "_and_DP" in feature_type:
             feature_cols = [col for col in all_cols if "P__" in col]
     elif  "DP" in feature_type:
         feature_cols = [col for col in all_cols if "DP__" in col]

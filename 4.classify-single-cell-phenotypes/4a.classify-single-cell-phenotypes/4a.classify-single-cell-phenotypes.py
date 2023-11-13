@@ -10,10 +10,10 @@
 
 
 import pathlib
-import joblib
 import sys
 import gc
 
+import joblib
 import pandas as pd
 import numpy as np
 
@@ -68,14 +68,14 @@ for normalized_plate_path in normalized_plates_path.iterdir():
     # load features
     col_types = {col: np.float32 for col in feature_cols}
     plate_features = pd.read_csv(
-        normalized_plate_path, low_memory=True, usecols=feature_cols,
+        normalized_plate_path, usecols=feature_cols,
     )
     
     # load metadata
     print("Loading plate metadata...")
     col_types = {col: str for col in metadata_cols}
     plate_metadata = pd.read_csv(
-        normalized_plate_path, low_memory=True, usecols=metadata_cols,
+        normalized_plate_path, usecols=metadata_cols,
     )
 
     print("Getting multi-class model classifications...")
