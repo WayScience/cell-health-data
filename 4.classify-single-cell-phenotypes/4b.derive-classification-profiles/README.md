@@ -10,10 +10,10 @@ Follow the steps in [4.classify-single-cell-phenotypes/README.md](../README.md) 
 
 This module outputs tsv files that contain "classification profiles" for a particular model.
 These profiles are generated from the single-cell classification probabilities generated in [4a.classify-single-cell-phenotypes](../4a.classify-single-cell-phenotypes/).
-For each model, we find the mean of the single-cell classification probabilities across each perturbation and cell line to create a composite profile. 
+For each model, we find the mean of the single-cell classification probabilities across each perturbation and cell line to create a composite profile.
 This aggregated data provides a summarized view of cell behavior for each perturbation/cell line combination, as predicted by each model.
 
-The contents of the tsv file containing the classification profiles for the `OutOfFocus` model predictions from are shown below:
+The contents of the tsv file containing the classification profiles for the `OutOfFocus` model predictions are shown below:
 
 | Metadata_pert_name | Metadata_cell_line | OutOfFocus | OutOfFocus Negative |
 |--------------------|--------------------|------------|---------------------|
