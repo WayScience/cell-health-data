@@ -1,6 +1,6 @@
 # 4a. Classify Single Cell Phenotypes
 
-In this module, we present our pipeline for classifying single cell phenotypes.
+In this module, we present our pipeline for classifying single-cell phenotypes.
 
 ## Deriving Classifications:
 
