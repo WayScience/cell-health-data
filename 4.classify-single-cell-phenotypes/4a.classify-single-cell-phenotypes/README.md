@@ -14,7 +14,7 @@ These models include multi-class models (16 output probabilities, 1 for each phe
 For more information on model training and type see [phenotypic_profiling_model/2.train_model](https://github.com/WayScience/phenotypic_profiling_model/tree/main/2.train_model).
 
 Each compressed csv file output by this module contains rows of single-cell metadata (location, perturbation, etc) and feature classification probabilities, as derived by the particular model.
-There is one compressed csv file for each of the nine plates in the Cell Health dataset.
+There is one compressed csv file corresponding to each of the nine plates in the Cell-Health dataset.
 The contents of the compressed csv file containing `OutOfFocus` model predictions from plate `SQ00014613` are shown below:
 
 | Location_Center_X | Location_Center_Y | Metadata_Site | Metadata_Well | Metadata_Plate | Metadata_Plate_Map_Name | Metadata_Reagent | OutOfFocus | OutOfFocus Negative |
