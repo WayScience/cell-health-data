@@ -4,7 +4,7 @@ In this module, we perform the analysis of model-generated data.
 
 ### Model Probability Analysis
 
-We use the model probabilities generated from [shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/final__CP_areashape_only__balanced.joblib) and [non-shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/shuffled_baseline__CP__balanced.joblib) weighted logistic regression models, trained exclusively from cellprofiler areashape morphology features.
+We use the model probabilities generated from [non-shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/final__CP_areashape_only__balanced.joblib) and [shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/shuffled_baseline__CP__balanced.joblib) weighted logistic regression models, trained exclusively from cellprofiler areashape morphology features.
 
 We compare the probabilities between the each treated well and the remaining negative control wells on the corresponding plate.
 Each treatment well and corresponding negative control well probabilities are only compared if the number of cells in these groups is above a given cell count threshold.
