@@ -4,10 +4,10 @@ In this module, we perform the analysis of model-generated data.
 
 ### Model Probability Analysis
 
-We use the model probabilities generated from [non-shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/final__CP_areashape_only__balanced.joblib) and [shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/shuffled_baseline__CP__balanced.joblib) weighted logistic regression models, trained exclusively from [mitocheck](https://github.com/WayScience/mitocheck_data) cellprofiler areashape morphology features.
+We use the model phenotype probabilities generated from [non-shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/final__CP_areashape_only__balanced.joblib) and [shuffled](https://github.com/WayScience/phenotypic_profiling_model/blob/main/2.train_model/models/multi_class_models/shuffled_baseline__CP__balanced.joblib) weighted logistic regression models, trained exclusively from [mitocheck](https://github.com/WayScience/mitocheck_data) cellprofiler areashape morphology features.
 
-We compare the probabilities between the each treated well and the remaining negative control wells on the corresponding plate.
-Each treatment well and corresponding negative control well probabilities are only compared if the number of cells in these groups is above a given cell count threshold.
+We compare the phenotype probabilities between the each treated well and the remaining negative control wells on the corresponding plate.
+Each treatment well and corresponding negative control well phenotype probabilities are only compared if the number of cells in these groups is above a given cell count threshold.
 The group, treatment cells or control cells, are then randomly down-sampled depending on which of these groups has a larger population of cells.
 Random sampling of the control cells is accomplished through stratification of cells by the plate's wells.
 After sampling the cell population, the cells from the treated and control groups are compared using the KS test statistic.
