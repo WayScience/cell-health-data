@@ -98,6 +98,8 @@ def strat_samp_wells(_welldf, _total_cell_count):
 
 def get_treatment_comparison(_comp_functions, _treatdf, _negcondf, _phenotype_cols, _filt_cols, _control_cutoff = 50, _treat_cutoff = 50):
     """
+    This function is intended to preprocess the predicted MitoCheck phenotype probability data prior to comparing the phenotype predicted probabilities.
+    Please refer to the README for additional information on how the treatment and control groups are compared.
     Parameters
     ----------
     _comp_functions: Dictionary of Dictionaries
@@ -165,7 +167,6 @@ def get_treatment_comparison(_comp_functions, _treatdf, _negcondf, _phenotype_co
             else:
                 samp_treat = group_treatdf
                 samp_neg = strat_samp_wells(group_negdf, min_cell_count)
-
 
             # Track the minimum cell count across all comparisons
             ref_cols["cell_count"] = min_cell_count
