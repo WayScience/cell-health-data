@@ -13,7 +13,7 @@ These profiles are generated from the single-cell classification probabilities g
 For each model, we find the mean of the single-cell classification probabilities across each perturbation and cell line to create a composite profile.
 This aggregated data provides a summarized view of cell behavior for each perturbation/cell line combination, as predicted by each model.
 
-The contents of the tsv file containing the classification profiles for the `OutOfFocus` model predictions are shown below:
+The contents of the TSV file containing the classification profiles for the `OutOfFocus` model predictions are shown below:
 
 | Metadata_pert_name | Metadata_cell_line | OutOfFocus | OutOfFocus Negative |
 |--------------------|--------------------|------------|---------------------|
