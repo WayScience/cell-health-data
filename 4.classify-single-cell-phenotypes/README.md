@@ -13,6 +13,9 @@ In [4a.classify-single-cell-phenotypes.ipynb](4a.classify-single-cell-phenotypes
 In [4b.derive-classification-profiles.ipynb](4b.derive-classification-profiles/4b.derive-classification-profiles.ipynb), these single cell classifications are averaged across perturbation to create classification profiles.
 These classification profiles are further analyzed in [phenotypic_profiling_model](https://github.com/WayScience/phenotypic_profiling_model).
 
+**Note:** The [4a.classify-single-cell-phenotypes.ipynb](4a.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes.ipynb) and [4b.derive-classification-profiles.ipynb](4b.derive-classification-profiles/4b.derive-classification-profiles.ipynb) were evaluated, but their respective python scripts were run to save memory.
+Thus, the outputs for these notebooks are incomplete.
+
 ## Step 1: Setup Feature Classification Environment
 
 ### Step 1a: Create Feature Classification Environment
@@ -37,8 +40,8 @@ Use the commands below to download the [models/](https://github.com/WayScience/p
 ```sh
 # Run these commands to download models from phenotypic_profiling_model
 
-# make sure you are inside 4.classify-single-cell-phenotypes/
-cd 4.classify-single-cell-phenotypes/
+# make sure you are inside 4.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes/
+cd 4.classify-single-cell-phenotypes/4a.classify-single-cell-phenotypes/
 
 # make download directory
 mkdir phenotypic_profiling_model
@@ -72,3 +75,7 @@ Inside the notebook [4b.derive-classification-profiles.ipynb](4b.derive-classifi
 # Run this script to classify Cell Health features
 bash 4.classify-single-cell-phenotypes.sh
 ```
+
+## Outputs
+
+The output files and structures are defined in [4a.classify-single-cell-phenotypes/README.md](4a.classify-single-cell-phenotypes/README.md) and [4b.derive-classification-profiles/README.md](4b.derive-classification-profiles/README.md).

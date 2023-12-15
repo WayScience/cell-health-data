@@ -10,11 +10,10 @@
 
 
 import pathlib
-import urllib.request
-import joblib
-import importlib
 import sys
+import gc
 
+import joblib
 import pandas as pd
 import numpy as np
 
@@ -50,7 +49,7 @@ single_class_models_dir = pathlib.Path(
 # ### Derive and save phenotypic class probabilities
 # 
 
-# In[3]:
+# In[ ]:
 
 
 # iterate through plates so each plate data only needs to be loaded once
@@ -69,17 +68,20 @@ for normalized_plate_path in normalized_plates_path.iterdir():
     # load features
     col_types = {col: np.float32 for col in feature_cols}
     plate_features = pd.read_csv(
-        normalized_plate_path, low_memory=True, usecols=feature_cols
+        normalized_plate_path, usecols=feature_cols,
     )
+    
     # load metadata
     print("Loading plate metadata...")
     col_types = {col: str for col in metadata_cols}
     plate_metadata = pd.read_csv(
-        normalized_plate_path, low_memory=True, usecols=metadata_cols
+        normalized_plate_path, usecols=metadata_cols,
     )
 
     print("Getting multi-class model classifications...")
     for model_path in sorted(multi_class_models_dir.iterdir()):
+        
+        print(model_path)
 
         # load current model
         model = joblib.load(model_path)
@@ -94,14 +96,19 @@ for normalized_plate_path in normalized_plates_path.iterdir():
         )
 
         # save plate probas with metadata
+        save_dir_name = model_path.name.replace(".joblib", "")
         model_plate_probas_save_path = pathlib.Path(
-            f"{classifications_save_path}/multi_class_models/{model_type}__{feature_type}/{plate}__cell_classifications.csv.gz"
+            f"{classifications_save_path}/multi_class_models/{save_dir_name}/{plate}__cell_classifications.csv.gz"
         )
         model_plate_probas_save_path.parent.mkdir(exist_ok=True, parents=True)
         pd.concat([plate_metadata, plate_probas], axis=1).to_csv(
             model_plate_probas_save_path, compression="gzip"
         )
-
+        
+        # perform garbage collection to save memory
+        del plate_probas
+        gc.collect()
+    
     print("Getting single-class model classifications...")
     for phenotypic_class_models_path in sorted(single_class_models_dir.iterdir()):
         for model_path in sorted(phenotypic_class_models_path.iterdir()):
@@ -127,4 +134,13 @@ for normalized_plate_path in normalized_plates_path.iterdir():
             pd.concat([plate_metadata, plate_probas], axis=1).to_csv(
                 model_plate_probas_save_path, compression="gzip", index=False
             )
+            
+            # perform garbage collection to save memory
+            del plate_probas
+            gc.collect()
+            
+    # perform garbage collection to save memory    
+    del plate_features
+    del plate_metadata
+    gc.collect()
 

@@ -76,10 +76,10 @@ for model_classifications_dir in MCM_classifications.iterdir():
 
     # get information about the current model's classifications we are looking at
     model_type = model_classifications_dir.name.split("__")[0]
-    feature_type = model_classifications_dir.name.split("__")[1].replace(".joblib", "")
+    feature_type = model_classifications_dir.name.split("__")[1]
 
     print(
-        f"Deriving classification profiles for {model_type} model with {feature_type} features"
+        f"Deriving classification profiles for {model_classifications_dir.name}"
     )
 
     # derive classification profiles
@@ -88,6 +88,7 @@ for model_classifications_dir in MCM_classifications.iterdir():
     )
 
     # save classification profiles
+    # save plate probas with metadata
     classification_profiles_save_path = pathlib.Path(
         f"{classification_profiles_save_dir}/multi_class_models/{model_classifications_dir.name}__classification_profiles.tsv"
     )
