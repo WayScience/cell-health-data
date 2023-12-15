@@ -76,6 +76,6 @@ Inside the notebook [4b.derive-classification-profiles.ipynb](4b.derive-classifi
 bash 4.classify-single-cell-phenotypes.sh
 ```
 
-## Ouputs
+## Outputs
 
 The output files and structures are defined in [4a.classify-single-cell-phenotypes/README.md](4a.classify-single-cell-phenotypes/README.md) and [4b.derive-classification-profiles/README.md](4b.derive-classification-profiles/README.md).
