@@ -3,6 +3,9 @@
 
 # # Classify Cell Health Nuclei Features
 # 
+# This Python script version of this notebook was run to save memory.
+# Thus, the output for this notebook is incomplete.
+# 
 # ### Import libraries
 # 
 
@@ -11,7 +14,7 @@
 
 import pathlib
 import sys
-import gc
+import gc # import garbace collector interface to reduce memory usage in this notebook
 
 import joblib
 import pandas as pd
