@@ -5,7 +5,7 @@
 # We compare the treatments in each well using cell treatment probabilities and negative control probabilities for each phenotype.
 # This comparison is accomplished with a KS Test.
 
-# In[ ]:
+# In[1]:
 
 
 import pathlib
@@ -21,7 +21,7 @@ import well_significance_testing as sig_test
 
 # ## Find the root of the git repo on the host system
 
-# In[ ]:
+# In[2]:
 
 
 # Get the current working directory
@@ -44,7 +44,7 @@ if root_dir is None:
 
 # ## Input and Output Paths
 
-# In[ ]:
+# In[3]:
 
 
 # Input paths
@@ -71,44 +71,9 @@ output_path = pathlib.Path("class_balanced_well_log_reg_comparison_results")
 output_path.mkdir(parents=True, exist_ok=True)
 
 
-# ## Combine shuffled and final model data
-
-# In[ ]:
-
-
-# Define the type of model
-final_probadf["Metadata_Model_Type"] = "final"
-shuf_probadf["Metadata_Model_Type"] = "shuffled"
-
-probadf = pd.concat([final_probadf, shuf_probadf])
-
-
-# ## Merge the platemap and probability data
-
-# In[ ]:
-
-
-platemap_metacols = ["Plate", "Well"]
-platemap_cols = ["Reagent Identifier", "Characteristics [Cell Line]", "Control Type"]
-probadf = probadf.merge(platemapdf[platemap_cols + platemap_metacols], how="inner", left_on=["Metadata_Plate", "Metadata_Well"], right_on=platemap_metacols)
-
-# Drop Redundant columns from merge
-probadf.drop(columns=platemap_metacols, inplace=True)
-
-
-# ## Define phenotype and columns to group by
-
-# In[ ]:
-
-
-phenotype_cols = probadf.loc[:, "ADCCM":"SmallIrregular"].columns.tolist()
-
-filt_cols = ['Metadata_Plate', 'Reagent Identifier', 'Metadata_Model_Type', 'Characteristics [Cell Line]', 'Metadata_Well']
-
-
 # ## KS test wrapper function
 
-# In[ ]:
+# In[4]:
 
 
 def perform_ks_test(_dmso_probs, _treatment_probs):
@@ -129,9 +94,44 @@ def perform_ks_test(_dmso_probs, _treatment_probs):
     return zip(["comparison_metric_value", "p_value"], [stat, p_value])
 
 
+# ## Combine shuffled and final model data
+
+# In[5]:
+
+
+# Define the type of model
+final_probadf["Metadata_Model_Type"] = "final"
+shuf_probadf["Metadata_Model_Type"] = "shuffled"
+
+probadf = pd.concat([final_probadf, shuf_probadf])
+
+
+# ## Merge the platemap and probability data
+
+# In[6]:
+
+
+platemap_metacols = ["Plate", "Well"]
+platemap_cols = ["Reagent Identifier", "Characteristics [Cell Line]", "Control Type"]
+probadf = probadf.merge(platemapdf[platemap_cols + platemap_metacols], how="inner", left_on=["Metadata_Plate", "Metadata_Well"], right_on=platemap_metacols)
+
+# Drop Redundant columns from merge
+probadf.drop(columns=platemap_metacols, inplace=True)
+
+
+# ## Define phenotype and columns to group by
+
+# In[7]:
+
+
+phenotype_cols = probadf.loc[:, "ADCCM":"SmallIrregular"].columns.tolist()
+
+filt_cols = ['Metadata_Plate', 'Reagent Identifier', 'Metadata_Model_Type', 'Characteristics [Cell Line]', 'Metadata_Well']
+
+
 # ## Defining tests and aggregation metric names
 
-# In[ ]:
+# In[8]:
 
 
 # Create a dictionary where the keys represent the name of the comparison or test, and the values are dictionaries
@@ -144,7 +144,7 @@ comp_functions = {"ks_test":  # Name of the test to perform
 
 # ## Compare treatments and negative controls
 
-# In[ ]:
+# In[9]:
 
 
 treatments = sig_test.get_treatment_comparison(comp_functions,
@@ -157,7 +157,7 @@ treatments = sig_test.get_treatment_comparison(comp_functions,
 
 # ## Save the output of the treatment
 
-# In[ ]:
+# In[10]:
 
 
 treatments = pd.DataFrame(treatments)
